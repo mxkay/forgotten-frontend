@@ -52,6 +52,24 @@ const Login = () => {
           value={newUser.email}
         />
       </View>
+      <Button
+        title="Submit"
+        onPress={() => {
+          const makeAPICall = async () => {
+            try {
+              const res = await axios({
+                url: `https://immense-tor-64805.herokuapp.com/api/user`,
+                method: "POST",
+                data: newUser,
+              });
+              console.log(res.data);
+            } catch (err) {
+              console.error(err);
+            }
+          };
+          makeAPICall();
+        }}
+      />
     </View>
   );
 };
