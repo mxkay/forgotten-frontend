@@ -2,6 +2,7 @@ import React from  'react';
 import { Button, View, Text } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import Post from "../Shared/Post/Post"
 
 // import Home from '../Home/Home'
 // import MyProfile from '../MyProfile/MyProfile'
@@ -13,6 +14,7 @@ function Home ({ navigation }) {
             <Text>
             This is the Home Screen   
             </Text> 
+            <Post />
         </View>
     )
 }
