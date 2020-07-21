@@ -1,21 +1,26 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import React, { useState, useContext, createContext } from 'react';
+import UserDataContext from './components/Shared/UserDataContext/UserDataContext';
+import Login from './components/Login/Login';
+import Home from "./components/Home/Home";
 import Footer from "./components/Footer/Footer";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+export default function App () {
+  const [userData, setUserData] = useState({email: '', handle: '', name: '', _id: ''});
+  const value = { userData, setUserData };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-  },
-});
+
+  return (
+
+    <UserDataContext.Provider value={value}>
+        {userData._id
+          ?
+            `Greetings ${userData.name}`
+          :
+            <Login />
+        }
+//       <Home />
+    </UserDataContext.Provider>
+  );
+};
+
