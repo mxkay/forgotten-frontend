@@ -3,12 +3,16 @@ import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
 import axios from "axios";
 
 const Login = () => {
+  // inputted sign in handle
   const [input, setInput] = useState("");
+  // back end user info associated with that handle
   const [user, setUser] = useState({});
+  // creation of new user
   const [newUser, setNewUser] = useState({ name: "", handle: "", email: "" });
 
   return (
     <View>
+      {/* Sign in form */}
       <View>
         <Text>Sign In</Text>
         <TextInput
@@ -23,8 +27,10 @@ const Login = () => {
               const res = await axios(
                 `https://immense-tor-64805.herokuapp.com/api/user/handle/${input}`
               );
+              // if API call returns empty array, handle doesn't exist
               if (res.data.length === 0) {
                 Alert.alert("Invalid handle");
+                // if API does find a match, return that user's info
               } else {
                 setUser(res.data);
               }
@@ -33,6 +39,7 @@ const Login = () => {
           }}
         />
       </View>
+      {/* Create account form */}
       <View>
         <Text>Don't have an account? Make one below: </Text>
         <TextInput
@@ -57,11 +64,14 @@ const Login = () => {
         title="Submit"
         onPress={() => {
           const makeAPICall = async () => {
+            // API call checking if handle desired already exists
             const res1 = await axios(
               `https://immense-tor-64805.herokuapp.com/api/user/handle/${newUser.handle}`
             );
+            // if data returned has content, handle exists
             if (res1.data.length > 0) {
               Alert.alert("Handle already taken");
+              // if not, create the new user
             } else {
               const res2 = await axios({
                 url: `https://immense-tor-64805.herokuapp.com/api/user`,
