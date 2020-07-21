@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, Text, View, Platform } from "react-native";
-// import Feed from "../Shared/Feed";
+import Feed from "../Shared/Feed/Feed";
 
 const Home = () => {
   return (
     <View style={styles.container}>
       <Text>Under Construction</Text>
-      {/* <Feed /> */}
+      <Feed />
     </View>
   );
 };
