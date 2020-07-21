@@ -3,6 +3,7 @@ import React, { useState, useContext, createContext } from 'react';
 import UserDataContext from './components/Shared/UserDataContext/UserDataContext';
 import Login from './components/Login/Login';
 import Home from "./components/Home/Home";
+import Footer from "./components/Footer/Footer";
 
 export default function App () {
   const [userData, setUserData] = useState({email: '', handle: '', name: '', _id: ''});
