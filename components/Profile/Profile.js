@@ -5,39 +5,37 @@ import UserDataContext from '../Shared/UserDataContext/UserDataContext';
 const Profile = () => {
     // userData for the user that is currently logged in
     const { userData, setUserData } = useContext(UserDataContext);
-    const [ filter, setFilter ] = useState('');
+    const [ filter, setFilter ] = useState('all');
 
     return (
-    <View style={styles.container}>
-        <Text style={styles.name}>{userData.name}</Text>
-        <Text style={styles.handle}>{userData.handle}</Text>
-        <View style={styles.filterButtonsContainer}>
-            <View style={styles.filterButtons}>
-                <Button 
-                    title='All'
-                    type='clear'
-                    onPress={() => setFilter('')}
-                />
+        <View style={styles.container}>
+            <Text style={styles.name}>{userData.name}</Text>
+            <Text style={styles.handle}>{userData.handle}</Text>
+            <View style={styles.filterButtonsContainer}>
+                <View style={styles.filterButtons}>
+                    <Button 
+                        title='All'
+                        onPress={() => setFilter('all')}
+                    />
+                </View>
+                <View style={styles.filterButtons}>
+                    <Button
+                        buttonStyle={styles.filterButtons}
+                        title='Loaned'
+                        onPress={() => setFilter('loaned')}
+                    />
+                </View>
+                <View style={styles.filterButtons}>
+                    <Button
+                        buttonStyle={styles.filterButtons}
+                        title='Borrowed'
+                        onPress={() => setFilter('borrowed')}
+                    />
+                </View>
             </View>
-            <View style={styles.filterButtons}>
-                <Button
-                    buttonStyle={styles.filterButtons}
-                    title='Loaned'
-                    type='outline'
-                    onPress={() => setFilter('loaned')}
-                />
-            </View>
-            <View style={styles.filterButtons}>
-                <Button
-                    buttonStyle={styles.filterButtons}
-                    title='Borrowed'
-                    // type={filter==='borrowed'?'solid':'clear'}
-                    onPress={() => setFilter('borrowed')}
-                />
-            </View>
+            <Text>{filter}</Text>
+            {/* <Feed filter={lenderID: userData._id, borrowerID: userData._id}/> */}
         </View>
-        {/* <Feed filter={lenderID: userData._id, borrowerID: userData._id}/> */}
-    </View>
     );
 };
 
