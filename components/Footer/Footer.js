@@ -1,13 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Footer() {
+const Footer = () => {
   return (
     <View style={styles.container}>
-      <Text>© Mohammad Hassan, Tyrone Pugh, Will Tidwell and Kay Vail</Text>
+      <Text>
+        © Pending. Contributors Mohammad Hassan, Tyrone Pugh, Will Tidwell and
+        Kay Vail
+      </Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -17,3 +20,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
   },
 });
+
+export default Footer;
