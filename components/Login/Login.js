@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
+import { Text, View, TextInput, Button } from "react-native";
 import axios from "axios";
-
-import UserDataContext from '../Shared/UserDataContext/UserDataContext';
+import InfoMessage from "../Shared/InfoMessage/InfoMessage";
+import UserDataContext from "../Shared/UserDataContext/UserDataContext";
 
 const Login = () => {
   // userData for the user that is currently logged in
@@ -13,32 +13,38 @@ const Login = () => {
   // creation of new user
   const [newUser, setNewUser] = useState({ name: "", handle: "", email: "" });
 
+  const [isValid, setIsValid] = useState(true);
+  const [isUnique, setIsUnique] = useState(true);
+
   const attemptLogin = () => {
     const makeAPICall = async () => {
+      // clear any other errors
+      setIsUnique(true);
       const res = await axios(
         `https://immense-tor-64805.herokuapp.com/api/user/handle/${input}`
       );
-      // if API call returns empty array, handle doesn't exist
-      if (res.data.length === 0) {
-        Alert.alert("Invalid handle");
-        // if API does find a match, return that user's info
-      } else {
+      // if API call returns data, set that value to userData
+      if (res.data.length > 0) {
         setUserData(res.data[0]);
+        // if not, handle is not valid
+      } else {
+        setIsValid(false);
       }
     };
     makeAPICall();
-  }
+  };
 
   const onCreateSubmit = () => {
     const makeAPICall = async () => {
+      // clear any other errors
+      setIsValid(true);
       // API call checking if handle desired already exists
       const res1 = await axios(
         `https://immense-tor-64805.herokuapp.com/api/user/handle/${newUser.handle}`
       );
-      console.log('res1.data: ', res1.data);
-      // if data returned has content, handle exists
+      // if data returned has content, handle already exists
       if (res1.data.length > 0) {
-        Alert.alert("Handle already taken");
+        setIsUnique(false);
         // if not, create the new user
       } else {
         const res2 = await axios({
@@ -51,7 +57,7 @@ const Login = () => {
       }
     };
     makeAPICall();
-  }
+  };
 
   return (
     <View>
@@ -63,10 +69,7 @@ const Login = () => {
           onChangeText={(text) => setInput(text.toLowerCase())}
           value={input}
         />
-        <Button
-          title="Submit"
-          onPress={attemptLogin}
-        />
+        <Button title="Submit" onPress={attemptLogin} />
       </View>
       {/* Create account form */}
       <View>
@@ -88,11 +91,14 @@ const Login = () => {
           onChangeText={(text) => setNewUser({ ...newUser, email: text })}
           value={newUser.email}
         />
+        <Button title="Submit" onPress={onCreateSubmit} />
       </View>
-      <Button
-        title="Submit"
-        onPress={onCreateSubmit}
-      />
+      <View>
+        {isValid === false ? <InfoMessage content="Invalid Handle" /> : null}
+        {isUnique === false ? (
+          <InfoMessage content="Handle Already Taken" />
+        ) : null}
+      </View>
     </View>
   );
 };
