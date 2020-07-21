@@ -12,7 +12,7 @@ function Home ({ navigation }) {
     return(
         <View>
             <Text>
-            This is the Home Screen   
+            Home   
             </Text> 
             <Post />
         </View>
