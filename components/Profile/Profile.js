@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, Platform, Button } from "react-native";
 import UserDataContext from '../Shared/UserDataContext/UserDataContext';
