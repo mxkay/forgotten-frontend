@@ -2,7 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, Platform, Button } from "react-native";
 import UserDataContext from '../Shared/UserDataContext/UserDataContext';
-import Layout from '../Shared/Layout/Layout'
+import Layout from '../Shared/Layout/Layout';
+import Feed from '../Shared/Feed/Feed';
 
 const Profile = ({ navigation }) => {
     // userData for the user that is currently logged in
@@ -36,8 +37,14 @@ const Profile = ({ navigation }) => {
                         />
                     </View>
                 </View>
-                <Text>{filter}</Text>
-                {/* <Feed filter={lenderID: userData._id, borrowerID: userData._id}/> */}
+                {
+                    filter === 'loaned'?
+                        <Feed lenderID={userData._id}/>
+                    : filter === 'borrowed'?
+                        <Feed borrowerID={userData._id}/>
+                    :
+                        <Feed lenderID={userData._id} borrowerID={userData._id} />
+                }
             </View>
         </Layout>
     );
