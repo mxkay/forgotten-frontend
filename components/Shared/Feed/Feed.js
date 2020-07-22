@@ -3,8 +3,8 @@ import { StyleSheet, View } from "react-native";
 import axios from "axios";
 import Post from "../Post/Post";
 
-const Feed = (props) => {
-  const [transactions, setTransaction] = useState([]);
+const Feed = ({ lenderID, borrowerID, mode }) => {
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     const makeAPICall = async () => {
@@ -12,8 +12,7 @@ const Feed = (props) => {
         const response = await axios(
           `https://immense-tor-64805.herokuapp.com/api/transaction`
         );
-        console.log("Transactions - useEffect - response", response);
-        setTransaction(response.data);
+        setTransactions(response.data);
       } catch (err) {
         console.error(err);
       }
@@ -21,13 +20,29 @@ const Feed = (props) => {
     makeAPICall();
   }, []);
 
-  const transactionArr = transactions.map((element) => (
-    <>
-      <Post data={element} key={element._id} />
-    </>
-  ));
+  const posts = transactions
+    .filter(
+      transaction => {
+        return (
+          mode === 'strict'?  // all queries must match
+            (!borrowerID || transaction.borrowerID == borrowerID) &&
+            (!lenderID || transaction.lenderID == lenderID)
+          :
+            ( !borrowerID && !lenderID) ||
+            ( borrowerID && transaction.borrowerID == borrowerID) ||
+            ( lenderID && transaction.lenderID == lenderID)
+        );
+      }
+    )
+    .map(
+      (transaction, index) => {
+        return (
+            <Post data={transaction} key={index} />
+        );
+      }
+    );
 
-  return <View style={styles.container}>{transactionArr}</View>;
+  return <View style={styles.container}>{posts}</View>;
 };
 
 const styles = StyleSheet.create({
