@@ -1,11 +1,15 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useContext, createContext } from "react";
+import { Text, View } from "react-native";
 import UserDataContext from "./components/Shared/UserDataContext/UserDataContext";
 import Login from "./components/Login/Login";
+import Home from "./components/Home/Home";
+import Footer from "./components/Footer/Footer";
 import Layout from "./components/Layout/Layout";
 
-const App = () => {
+const App = () =>  {
+
   const [userData, setUserData] = useState({
     email: "",
     handle: "",
@@ -20,5 +24,6 @@ const App = () => {
     </UserDataContext.Provider>
   );
 };
+
 
 export default App;
