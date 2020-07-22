@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View, Platform, Button } from "react-native";
+import { StyleSheet, Text, View, Platform } from "react-native";
 import Feed from "../Shared/Feed/Feed";
 
 const Home = () => {
