@@ -22,9 +22,7 @@ const Feed = (props) => {
   }, []);
 
   const transactionArr = transactions.map((element) => (
-    <>
-      <Post data={element} key={element._id} />
-    </>
+    <Post data={element} key={element._id} />
   ));
 
   return <View style={styles.container}>{transactionArr}</View>;
