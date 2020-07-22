@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import axios from "axios";
+import Post from "../Post/Post";
 
 const Feed = (props) => {
   const [transactions, setTransaction] = useState([]);
@@ -22,7 +23,7 @@ const Feed = (props) => {
 
   const transactionArr = transactions.map((element) => (
     <>
-      <Post data={transactions} key={transactions._id} />
+      <Post data={element} key={element._id} />
     </>
   ));
 
