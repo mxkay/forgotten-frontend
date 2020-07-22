@@ -6,15 +6,15 @@ import Profile from './components/Profile/Profile'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 
-export default function App({navigation}) {
+export default function App() {
   const [userData, setUserData] = useState({
     email: "",
     handle: "",
     name: "",
     _id: "",
   });
-  
   const value = { userData, setUserData };
+
   const Drawer = createDrawerNavigator();
 
   return (
@@ -22,9 +22,9 @@ export default function App({navigation}) {
       {userData._id ?
         <NavigationContainer>
           <Drawer.Navigator initialRouteName="Home" >
-              <Drawer.Screen name="Home" component={Home} />
-              <Drawer.Screen name="Profile" component={Profile} />
-          </Drawer.Navigator> 
+            <Drawer.Screen name="Home" component={Home} />
+            <Drawer.Screen name="Profile" component={Profile} />
+          </Drawer.Navigator>
         </NavigationContainer>
       :
         <Login />
