@@ -2,13 +2,16 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View, Platform } from "react-native";
 import Feed from "../Shared/Feed/Feed";
+import Layout from '../Shared/Layout/Layout'
 
-const Home = () => {
+const Home = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text>Under Construction</Text>
-      <Feed />
-    </View>
+    <Layout navigation={navigation}>
+      <View style={styles.container}>
+        <Text>Under Construction</Text>
+        <Feed />
+      </View>
+    </Layout>
   );
 };
 
