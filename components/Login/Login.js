@@ -4,9 +4,7 @@ import axios from "axios";
 import InfoMessage from "../Shared/InfoMessage/InfoMessage";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
 
-
 const Login = () => {
-
   // userData for the user that is currently logged in
   const { userData, setUserData } = useContext(UserDataContext);
 
