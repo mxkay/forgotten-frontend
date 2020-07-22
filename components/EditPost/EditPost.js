@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import PostForm from "../Shared/PostForm/PostForm";
+import axios from "axios";
 
 const EditPost = (props, { navigation }) => {
   const [post, setPost] = useState();
   const [isUpdated, setIsUpdated] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
 
+  console.log(props.id);
   useEffect(() => {
     const makeAPICall = async () => {
       try {
         const response = await axios(
-          `https://immense-tor-64805.herokuapp.com/api/transaction/5f15dc6578dfa4000457b326`
+          `https://immense-tor-64805.herokuapp.com/api/transaction/${props.id}`
         );
+        console.log(response.data);
         setPost(response.data);
       } catch (err) {
         console.error(err);
@@ -21,10 +24,10 @@ const EditPost = (props, { navigation }) => {
     makeAPICall();
   }, []);
 
-  const handleChange = (key) => (text) => {
+  const handleChange = (thePost) => {
+    console.log(thePost);
     setPost({
-      ...post,
-      key: text,
+      ...thePost,
     });
   };
 
@@ -32,7 +35,7 @@ const EditPost = (props, { navigation }) => {
     event.preventDefault();
 
     axios({
-      url: `https://immense-tor-64805.herokuapp.com/api/transaction/5f15dc6578dfa4000457b326`,
+      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${props.id}`,
       method: "PUT",
       data: post,
     })
@@ -63,8 +66,12 @@ const EditPost = (props, { navigation }) => {
   return (
     <View style={styles.container}>
       <Text>Under Construction</Text>
-      <PostForm postData={post} />
-      <Button onPress={destroy}>Delete Post</Button>
+      <PostForm
+        postData={post}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+      />
+      <Button title="Delete Post" onPress={destroy} />
     </View>
   );
 };
