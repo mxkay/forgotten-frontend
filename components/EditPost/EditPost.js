@@ -21,10 +21,10 @@ const EditPost = (props, { navigation }) => {
     makeAPICall();
   }, []);
 
-  const handleChange = (event) => {
-    setBook({
+  const handleChange = (key) => (text) => {
+    setPost({
       ...post,
-      [event.target.name]: event.target.value,
+      key: text,
     });
   };
 
