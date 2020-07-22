@@ -4,7 +4,7 @@ import React, { useState, useContext, createContext } from "react";
 import { Text, View } from "react-native";
 import UserDataContext from "./components/Shared/UserDataContext/UserDataContext";
 import Login from "./components/Login/Login";
-import Nav from "./components/Layout/Layout";
+import Layout from "./components/Layout/Layout";
 // import Footer from "./components/Footer/Footer";
 // import { NavigationContainer } from "@react-navigation/native";
 // import { createStackNavigator } from "@react-navigation/stack";
