@@ -3,17 +3,18 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import PostForm from "../Shared/PostForm/PostForm";
 import axios from "axios";
 
-const EditPost = (props, { navigation }) => {
+const EditPost = ({ navigation, id }) => {
   const [post, setPost] = useState();
   const [isUpdated, setIsUpdated] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
 
-  console.log(props.id);
+  console.log(navigation);
+
   useEffect(() => {
     const makeAPICall = async () => {
       try {
         const response = await axios(
-          `https://immense-tor-64805.herokuapp.com/api/transaction/${props.id}`
+          `https://immense-tor-64805.herokuapp.com/api/transaction/${id}`
         );
         console.log(response.data);
         setPost(response.data);
@@ -25,7 +26,6 @@ const EditPost = (props, { navigation }) => {
   }, []);
 
   const handleChange = (thePost) => {
-    console.log(thePost);
     setPost({
       ...thePost,
     });
@@ -35,7 +35,7 @@ const EditPost = (props, { navigation }) => {
     event.preventDefault();
 
     axios({
-      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${props.id}`,
+      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${id}`,
       method: "PUT",
       data: post,
     })
@@ -44,12 +44,12 @@ const EditPost = (props, { navigation }) => {
   };
 
   if (isUpdated) {
-    return () => navigation.navigate("Home");
+    () => navigation.navigate("Profile");
   }
 
   const destroy = async () => {
     const response = await axios({
-      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${props.match.params.id}`,
+      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${id}`,
       method: "DELETE",
     });
     setIsDeleted(true);
@@ -60,7 +60,7 @@ const EditPost = (props, { navigation }) => {
   }
 
   if (isDeleted) {
-    return () => navigation.navigate("Home");
+    () => navigation.navigate("Home");
   }
 
   return (
