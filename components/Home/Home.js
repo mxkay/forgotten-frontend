@@ -9,7 +9,7 @@ const Home = ({ navigation }) => {
     <Layout navigation={navigation}>
       <ScrollView >
         <View style={styles.container}>
-        <Text>Under Construction</Text>
+        {/* <Text>Under Construction</Text> */}
         <Feed />
         </View>
       </ScrollView>
