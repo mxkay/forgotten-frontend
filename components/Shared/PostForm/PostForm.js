@@ -1,47 +1,57 @@
 import React from "react";
-import { View, TextInput, Button, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { Label, Input, Button } from 'react-native-elements';
 
 const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCancel }) => {
   return (
     <View style={styles.container}>
-      <TextInput
+      {/* <Label/> */}
+      <Input
+        label="What was exchanged?"
         placeholder="Item"
         onChangeText={(text) => handleChange({ ...postData, name: text })}
         value={postData.name? postData.name : ''}
       />
-      <TextInput
-        placeholder="Icon"
+      <Input
+        label="Which icon looks best?"
+        placeholder="Icon name"
         onChangeText={(text) => handleChange({ ...postData, icon: text })}
         value={postData.icon ? postData.icon : ''}
       />
-      <TextInput
-        placeholder="Value"
+      <Input
+        label="How much was this worth?"
+        placeholder="$$.$$"
         onChangeText={(text) =>
           handleChange({ ...postData, value: Number(text) })
         }
         value={postData.value ? postData.value.toString() : ''}
       />
-      <TextInput
-        placeholder="Transaction Date MM/DD/YY"
+
+      <Input
+        label="Transaction date"
+        placeholder="MM/DD/YY"
         onChangeText={(text) =>
           handleChange({ ...postData, transactionDate: text })
         }
         value={postData.transactionDate ? postData.transactionDate : ''}
       />
-      <TextInput
-        placeholder="Anticipated Return Date MM/DD/YY"
+      <Input
+        label="Expected return date"
+        placeholder="MM/DD/YY"
         onChangeText={(text) => handleChange({ ...postData, returnDate: text })}
         value={postData.returnDate ? postData.returnDate : ''}
       />
-      <TextInput
-        placeholder="Lender Handle"
+      <Input
+        label="Lender handle"
+        placeholder="JoSchmo"
         onChangeText={(text) =>
           handleChange({ ...postData, lenderHandle: text })
         }
         value={postData.lenderHandle ? postData.lenderHandle : ''}
       />
-      <TextInput
-        placeholder="Borrower Handle or Name"
+      <Input
+        label="Borrower handle"
+        placeholder="JoSchmo"
         onChangeText={(text) =>
           handleChange({ ...postData, borrowerHandle: text })
         }
