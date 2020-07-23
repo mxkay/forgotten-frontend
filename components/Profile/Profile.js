@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, Platform, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  Button,
+  ScrollView,
+} from "react-native";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
 import Layout from "../Shared/Layout/Layout";
 import Feed from "../Shared/Feed/Feed";
@@ -13,37 +20,39 @@ const Profile = ({ navigation }) => {
 
   return (
     <Layout navigation={navigation}>
-      <View style={styles.container}>
-        <Text style={styles.name}>{userData.name}</Text>
-        <Text style={styles.handle}>{userData.handle}</Text>
-        <View style={styles.filterButtonsContainer}>
-          <View style={styles.filterButtons}>
-            <Button title="All" onPress={() => setFilter("all")} />
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.name}>{userData.name}</Text>
+          <Text style={styles.handle}>{userData.handle}</Text>
+          <View style={styles.filterButtonsContainer}>
+            <View style={styles.filterButtons}>
+              <Button title="All" onPress={() => setFilter("all")} />
+            </View>
+            <View style={styles.filterButtons}>
+              <Button
+                buttonStyle={styles.filterButtons}
+                title="Loaned"
+                onPress={() => setFilter("loaned")}
+              />
+            </View>
+            <View style={styles.filterButtons}>
+              <Button
+                buttonStyle={styles.filterButtons}
+                title="Borrowed"
+                onPress={() => setFilter("borrowed")}
+              />
+            </View>
           </View>
-          <View style={styles.filterButtons}>
-            <Button
-              buttonStyle={styles.filterButtons}
-              title="Loaned"
-              onPress={() => setFilter("loaned")}
-            />
-          </View>
-          <View style={styles.filterButtons}>
-            <Button
-              buttonStyle={styles.filterButtons}
-              title="Borrowed"
-              onPress={() => setFilter("borrowed")}
-            />
-          </View>
+          {filter === "loaned" ? (
+            <Feed lenderID={userData._id} />
+          ) : filter === "borrowed" ? (
+            <Feed borrowerID={userData._id} />
+          ) : (
+            <Feed lenderID={userData._id} borrowerID={userData._id} />
+          )}
         </View>
-        {filter === "loaned" ? (
-          <Feed lenderID={userData._id} />
-        ) : filter === "borrowed" ? (
-          <Feed borrowerID={userData._id} />
-        ) : (
-          <Feed lenderID={userData._id} borrowerID={userData._id} />
-        )}
-      </View>
-      <NewPostButton navigation={navigation} />
+        <NewPostButton navigation={navigation} />
+      </ScrollView>
     </Layout>
   );
 };
