@@ -1,5 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Post = (props) => {
   const data = props.data;
@@ -10,7 +12,7 @@ const Post = (props) => {
         <View style={styles.topOfCard}>
           <Text style={styles.icon}>{"icon"}</Text>
           <Text style={styles.lenderBorrower}>
-            {data.lenderName} {"=>"} {data.borrowerName}
+            {data.lenderName} {"👉"} {data.borrowerName}
           </Text>
           <Text style={styles.name}>{data.name}</Text>
         </View>
@@ -19,6 +21,16 @@ const Post = (props) => {
           Expected Return: {data.returnDate}
         </Text>
         <Text style={styles.description}>Description</Text>
+        <Button
+          icon={<Icon name="pencil" size={15} color="white" />}
+          buttonStyle={{
+            backgroundColor: "#302EA7",
+            borderRadius: 50,
+            height: 25,
+            width: 25,
+          }}
+          // onPress={'link to NewPost'}
+        />
       </View>
     </View>
   );
@@ -36,14 +48,15 @@ const styles = StyleSheet.create({
   card: {
     margin: 13,
     padding: 3,
-    backgroundColor: "#E5E4E0",
+    backgroundColor: "#ECECEC",
     color: "#302EA7",
-    borderRadius: 25,
+    borderRadius: 5,
   },
   lenderBorrower: {
     fontSize: 25,
     color: "#302EA7",
     padding: 8,
+    fontWeight: "bold",
   },
   name: {
     fontSize: 20,

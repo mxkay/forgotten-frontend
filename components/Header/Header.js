@@ -1,16 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { Entypo } from '@expo/vector-icons'; 
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 const Header = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Forgotten</Text>
             <StatusBar style="auto" />
-                <Button
-                    onPress={navigation.openDrawer}
-                    title="Menu"
-                />
+            <Entypo style={styles.burger} name="menu" size={40} color="white" onPress={navigation.openDrawer} />
+            <Text style={styles.text}>Forgotten</Text>
         </View>
     )
 }
@@ -24,7 +22,8 @@ const styles = StyleSheet.create({
       marginBottom: 10,
       paddingTop: 100,
       borderBottomEndRadius: 200,
-      borderBottomStartRadius: 0
+      borderBottomStartRadius: 0,
+      flexDirection: "row",
     },
     text: {
         fontSize: 30,
@@ -32,6 +31,15 @@ const styles = StyleSheet.create({
         color: "white",
         padding: 40,
         paddingRight: 80
+    },
+    button: {
+        borderWidth: 5,
+
+    },
+    burger:{
+        padding: 15,
+        paddingTop: 25,
+
     }
 });
 
