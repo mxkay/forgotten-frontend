@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { View } from "react-native";
 import PostForm from "../Shared/PostForm/PostForm";
 
-const NewPost = () => {
+const NewPost = ({ navigation }) => {
   const [post, setPost] = useState({});
+
   const handleChange = (thePost) => {
     setPost({
       ...thePost,
@@ -21,12 +22,18 @@ const NewPost = () => {
     }).catch(console.error);
   };
 
+  const handleCancel = () => {
+    setPost({});
+    navigation.navigate('Home');
+  };
+
   return (
     <View>
       <PostForm
-        handleChange={handleChange}
         postData={post}
+        handleChange={handleChange}
         handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
       />
     </View>
   );
