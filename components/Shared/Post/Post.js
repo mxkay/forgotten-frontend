@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
+import SelectedPostContext from "../SelectedPostContext/SelectedPostContext";
 
-const Post = (props) => {
-  const data = props.data;
+const Post = ({ navigation, data }) => {
+  const { postId, setPostId } = useContext(SelectedPostContext);
   console.log(data);
   return (
     <View>
@@ -19,6 +22,20 @@ const Post = (props) => {
           Expected Return: {data.returnDate}
         </Text>
         <Text style={styles.description}>Description</Text>
+        <Button
+          icon={<Icon name="pencil" size={15} color="white" />}
+          buttonStyle={{
+            backgroundColor: "#302EA7",
+            borderRadius: 50,
+            height: 20,
+            width: 20,
+          }}
+          onPress={() => {
+            // setState variable
+            setPostId(data._id);
+            navigation.navigate("EditPost");
+          }}
+        />
       </View>
     </View>
   );

@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import PostForm from "../Shared/PostForm/PostForm";
+import SelectedPostContext from "../Shared/SelectedPostContext/SelectedPostContext";
 import axios from "axios";
 
-const EditPost = ({ navigation, id }) => {
+const EditPost = ({ navigation }) => {
   const [post, setPost] = useState();
   const [isUpdated, setIsUpdated] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+
+  const { postId, setPostId } = useContext(SelectedPostContext);
+
+  let id = postId._id;
 
   console.log(navigation);
 

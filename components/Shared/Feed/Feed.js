@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import axios from "axios";
 import Post from "../Post/Post";
 
-const Feed = ({ lenderID, borrowerID, mode }) => {
+const Feed = ({ lenderID, borrowerID, mode, navigation }) => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -21,26 +21,17 @@ const Feed = ({ lenderID, borrowerID, mode }) => {
   }, []);
 
   const posts = transactions
-    .filter(
-      transaction => {
-        return (
-          mode === 'strict'?  // all queries must match
-            (!borrowerID || transaction.borrowerID == borrowerID) &&
+    .filter((transaction) => {
+      return mode === "strict" // all queries must match
+        ? (!borrowerID || transaction.borrowerID == borrowerID) &&
             (!lenderID || transaction.lenderID == lenderID)
-          :
-            ( !borrowerID && !lenderID) ||
-            ( borrowerID && transaction.borrowerID == borrowerID) ||
-            ( lenderID && transaction.lenderID == lenderID)
-        );
-      }
-    )
-    .map(
-      (transaction, index) => {
-        return (
-            <Post data={transaction} key={index} />
-        );
-      }
-    );
+        : (!borrowerID && !lenderID) ||
+            (borrowerID && transaction.borrowerID == borrowerID) ||
+            (lenderID && transaction.lenderID == lenderID);
+    })
+    .map((transaction, index) => {
+      return <Post data={transaction} key={index} navigation={navigation} />;
+    });
 
   return <View style={styles.container}>{posts}</View>;
 };
