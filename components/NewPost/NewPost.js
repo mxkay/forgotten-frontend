@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View } from "react-native";
 import Layout from '../Shared/Layout/Layout';
 import PostForm from "../Shared/PostForm/PostForm";
 
