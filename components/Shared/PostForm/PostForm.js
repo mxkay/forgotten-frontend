@@ -1,31 +1,122 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { View, StyleSheet } from "react-native";
-import { Input, Button } from 'react-native-elements';
+import { Text, Input, Button, ButtonGroup } from 'react-native-elements';
 
 const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCancel }) => {
+  const buttonsIsBorrowing = ['lending', 'borrowing'];
+  const buttonsOtherIsUser = ["is not a user", 'is a user'];
+  const [ isBorrowing, setIsBorrowing ] = useState(0);
+  const [ otherIsUser, setOtherIsUser ] = useState(1);
+  const [ otherHandle, setOtherHandle ] = useState('');
+  const [ otherName, setOtherName ] = useState('');
+  const [ otherIsFound, setOtherIsFound ] = useState(false);
+
+  const findUserIDByHandle = async (handle) => {
+    const res = await axios({
+      url: `https://immense-tor-64805.herokuapp.com/api/user/handle/${handle}`,
+      method: "GET"
+    }).catch(console.error);
+    return res.data? res.data[0]? res.data[0]._id : '' : '';
+  }
+
+  const handleOtherChange = async (text) => {
+    // if the other party is a user,
+    if( otherIsUser ) {
+      setOtherHandle(text);
+      // search for their account
+      const otherID = await findUserIDByHandle(text);
+      // if I find an account,
+      if( otherID ) {
+        // if the user is borrowing
+        if( isBorrowing ) {
+          // set the lenderID to the otherID, and clear lenderName, borrowerID, and borrowerName
+          handleChange({ ...postData, lenderID: otherID, lenderName: '', borrowerID: '', borrowerName: '' });
+        }
+        // if the user is lending,
+        else {
+          // set the borrowerID to the otherID, and clear borrowerName, lenderID, and lenderName
+          handleChange({ ...postData, lenderID: '', lenderName: '', borrowerID: otherID, borrowerName: '' });
+        }
+        setOtherIsFound(true);
+      }
+      else {
+        setOtherIsFound(false);
+      }
+    }
+    // if the other party is not a user
+    else {
+      setOtherName(text);
+    }
+  }
+
   return (
     <View style={styles.container}>
+      <Text style={{flex: 1, textAlign: 'center'}}>I am ...</Text>
+      <ButtonGroup
+        onPress={(selection) => {setIsBorrowing(selection)}}
+        selectedIndex={isBorrowing}
+        buttons={buttonsIsBorrowing}
+        containerStyle={{height: 40}}
+      />
+      <Text style={{flex: 1, textAlign: 'center'}}>{`${isBorrowing?'from':'to'} someone who`}</Text>
+      <ButtonGroup
+        onPress={(selection) => {setOtherIsUser(selection)}}
+        selectedIndex={otherIsUser}
+        buttons={buttonsOtherIsUser}
+        containerStyle={{height: 40}}
+      />
+
+      {otherIsUser?
+        <Input
+          label={`Who are you ${isBorrowing?'borrowing this from':'lending this to'}?`}
+          placeholder="user handle"
+          onChangeText={(text) => handleOtherChange(text)}
+          value={otherHandle}
+          rightIcon={
+            <Icon
+              name={otherIsFound? 'check-circle': 'times-circle'}
+              size={24}
+              color={otherIsFound? 'green': 'red'}
+            />
+          }
+        />
+        :
+        <Input
+          label={`Who are you ${isBorrowing?'borrowing this from':'lending this to'}?`}
+          placeholder="name"
+          onChangeText={(text) => handleOtherChange(text)}
+          value={otherName}
+          rightIcon={
+            <Icon
+              name={otherName? 'check-circle': 'times-circle'}
+              size={24}
+              color={otherName? 'green': 'red'}
+            />
+          }
+        />
+      }
       <Input
-        label="What was exchanged?"
+        label={`What are you ${isBorrowing?'borrowing':'lending'}?`}
         placeholder="Item"
         onChangeText={(text) => handleChange({ ...postData, name: text })}
         value={postData.name? postData.name : ''}
       />
       <Input
-        label="Which icon looks best?"
+        label="Which icon fits best?"
         placeholder="Icon name"
         onChangeText={(text) => handleChange({ ...postData, icon: text })}
         value={postData.icon ? postData.icon : ''}
       />
       <Input
-        label="How much was this worth?"
+        label="How much was this worth? (optional)"
         placeholder="$$.$$"
         onChangeText={(text) =>
           handleChange({ ...postData, value: Number(text) })
         }
         value={postData.value ? postData.value.toString() : ''}
       />
-
       <Input
         label="Transaction date"
         placeholder="MM/DD/YY"
@@ -35,27 +126,12 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
         value={postData.transactionDate ? postData.transactionDate : ''}
       />
       <Input
-        label="Expected return date"
+        label="Expected return date (optional)"
         placeholder="MM/DD/YY"
         onChangeText={(text) => handleChange({ ...postData, returnDate: text })}
         value={postData.returnDate ? postData.returnDate : ''}
       />
-      <Input
-        label="Lender handle"
-        placeholder="JoSchmo"
-        onChangeText={(text) =>
-          handleChange({ ...postData, lenderHandle: text })
-        }
-        value={postData.lenderHandle ? postData.lenderHandle : ''}
-      />
-      <Input
-        label="Borrower handle"
-        placeholder="JoSchmo"
-        onChangeText={(text) =>
-          handleChange({ ...postData, borrowerHandle: text })
-        }
-        value={postData.borrowerHandle ? postData.borrowerHandle : ''}
-      />
+      
       {handleSubmit?
         <Button title="Submit" onPress={handleSubmit} />
         :
