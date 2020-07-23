@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { View, StyleSheet } from "react-native";
 import { Text, Input, Button, ButtonGroup } from 'react-native-elements';
+import UserDataContext from '../UserDataContext/UserDataContext';
 
 const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCancel }) => {
+  // userData for the user that is currently logged in
+  const { userData, setUserData } = useContext(UserDataContext);
+  
   const buttonsIsBorrowing = ['lending', 'borrowing'];
   const buttonsOtherIsUser = ["is not a user", 'is a user'];
   const [ isBorrowing, setIsBorrowing ] = useState(0);
@@ -15,46 +19,54 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
 
   // when the user changes isBorrowing,
   // or when the user changes otherIsUser,
-  // clear all lender and borrower information and rerun handleOtherChange
+  // clear all lender and borrower information and rerun updateOther
   useEffect(() => {
     handleChange({ ...postData, lenderID: '', lenderName: '', borrowerID: '', borrowerName: '' });
     if( otherIsUser && otherHandle ) {
-      handleOtherChange(otherHandle);
+      updateOther(otherHandle);
     }
     else if ( !otherIsUser && otherName ) {
-      handleOtherChange(otherName);
+      updateOther(otherName);
     }
   },[isBorrowing,otherIsUser])
 
-  // finds a user ID by a given handle
-  // returns empty string if no user is found or there is no response
+  // finds a user by a given handle
+  // returns null if no user is found or there is no response
   const findUserIDByHandle = async (handle) => {
     const res = await axios({
       url: `https://immense-tor-64805.herokuapp.com/api/user/handle/${handle}`,
       method: "GET"
     }).catch(console.error);
-    return res.data? res.data[0]? res.data[0]._id : '' : '';
+    return res.data && res.data[0] && res.data[0]._id? res.data[0]: null;
   }
 
   // update the lenderID, lenderName, borrowerID, and borrowerName
   // based on the text argument, otherIsUser, and isBorrowing
-  const handleOtherChange = async (text) => {
+  const updateOther = async (text) => {
     // if the other party is a user,
     if( otherIsUser ) {
       setOtherHandle(text);
       // search for their account
-      const otherID = await findUserIDByHandle(text);
+      const other = await findUserIDByHandle(text);
       // if I find an account,
-      if( otherID ) {
+      if( other ) {
         // if the user is borrowing
         if( isBorrowing ) {
-          // set the lenderID to the otherID, and clear lenderName, borrowerID, and borrowerName
-          handleChange({ ...postData, lenderID: otherID, lenderName: '', borrowerID: '', borrowerName: '' });
+          handleChange({ ...postData,
+            lenderID: other._id,
+            lenderName: other.name,
+            borrowerID: userData._id,
+            borrowerName: userData.name,
+          });
         }
         // if the user is lending,
         else {
-          // set the borrowerID to the otherID, and clear borrowerName, lenderID, and lenderName
-          handleChange({ ...postData, lenderID: '', lenderName: '', borrowerID: otherID, borrowerName: '' });
+          handleChange({ ...postData,
+            lenderID: userData._id,
+            lenderName: userData.name,
+            borrowerID: other._id,
+            borrowerName: other.name,
+          });
         }
         setOtherIsFound(true);
       }
@@ -65,6 +77,22 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
     // if the other party is not a user
     else {
       setOtherName(text);
+      if( isBorrowing ) {
+        handleChange({ ...postData,
+          lenderID: '',
+          lenderName: text,
+          borrowerID: userData._id,
+          borrowerName: userData.name,
+        });
+      }
+      else {
+        handleChange({ ...postData,
+          lenderID: userData._id,
+          lenderName: userData.name,
+          borrowerID: '',
+          borrowerName: text,
+        });
+      }
     }
   }
 
@@ -89,7 +117,7 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
         <Input
           label={`Who are you ${isBorrowing?'borrowing this from':'lending this to'}?`}
           placeholder="user handle"
-          onChangeText={(text) => handleOtherChange(text)}
+          onChangeText={(text) => updateOther(text)}
           value={otherHandle}
           leftIcon={
             <Icon
@@ -103,7 +131,7 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
         <Input
           label={`Who are you ${isBorrowing?'borrowing this from':'lending this to'}?`}
           placeholder="name"
-          onChangeText={(text) => handleOtherChange(text)}
+          onChangeText={(text) => updateOther(text)}
           value={otherName}
           leftIcon={
             <Icon
