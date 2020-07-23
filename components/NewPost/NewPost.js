@@ -17,7 +17,9 @@ const NewPost = ({ navigation }) => {
       url: `https://immense-tor-64805.herokuapp.com/api/transaction`,
       method: "POST",
       data: post,
-    }).catch(console.error);
+    })
+    .then(navigation.navigate('Profile'))
+    .catch(console.error);
   };
 
   const handleCancel = () => {
