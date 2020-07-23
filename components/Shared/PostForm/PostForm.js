@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome5";
 import { View, StyleSheet } from "react-native";
 import { Text, Input, Button, ButtonGroup } from 'react-native-elements';
 
@@ -91,9 +91,9 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
           placeholder="user handle"
           onChangeText={(text) => handleOtherChange(text)}
           value={otherHandle}
-          rightIcon={
+          leftIcon={
             <Icon
-              name={otherIsFound? 'check-circle': 'times-circle'}
+              name={otherIsFound? 'user-check': 'user-times'}
               size={24}
               color={otherIsFound? 'green': 'red'}
             />
@@ -105,9 +105,9 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
           placeholder="name"
           onChangeText={(text) => handleOtherChange(text)}
           value={otherName}
-          rightIcon={
+          leftIcon={
             <Icon
-              name={otherName? 'check-circle': 'times-circle'}
+              name={otherName? 'user-astronaut': 'user-times'}
               size={24}
               color={otherName? 'green': 'red'}
             />
@@ -119,6 +119,13 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
         placeholder="item"
         onChangeText={(text) => handleChange({ ...postData, name: text })}
         value={postData.name? postData.name : ''}
+        leftIcon={
+          <Icon
+            name='box'
+            size={24}
+            color='black'
+          />
+        }
         rightIcon={
           <Icon
             name={postData.name? 'check-circle': 'times-circle'}
@@ -142,7 +149,7 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
         value={postData.value ? postData.value.toString() : ''}
         leftIcon={
           <Icon
-            name='money'
+            name='dollar-sign'
             size={24}
             color='black'
           />
@@ -162,6 +169,13 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
           handleChange({ ...postData, transactionDate: text })
         }
         value={postData.transactionDate ? postData.transactionDate : ''}
+        leftIcon={
+          <Icon
+            name='calendar-alt'
+            size={24}
+            color='black'
+          />
+        }
         rightIcon={
           <Icon
             name={postData.transactionDate && postData.transactionDate.length===8? 'check-circle': 'times-circle'}
@@ -175,6 +189,13 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
         placeholder="MM/DD/YY"
         onChangeText={(text) => handleChange({ ...postData, returnDate: text })}
         value={postData.returnDate ? postData.returnDate : ''}
+        leftIcon={
+          <Icon
+            name='calendar-alt'
+            size={24}
+            color='black'
+          />
+        }
         rightIcon={
           <Icon
             name={postData.returnDate && postData.returnDate.length===8? 'check-circle': 'times-circle'}
