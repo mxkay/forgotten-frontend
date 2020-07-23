@@ -1,11 +1,10 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Label, Input, Button } from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
 
 const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCancel }) => {
   return (
     <View style={styles.container}>
-      {/* <Label/> */}
       <Input
         label="What was exchanged?"
         placeholder="Item"
