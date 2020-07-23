@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 
-const PostForm = ({ handleChange, handleSubmit, postData }) => {
+const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCancel }) => {
   return (
     <View style={styles.container}>
       <TextInput
@@ -47,7 +47,21 @@ const PostForm = ({ handleChange, handleSubmit, postData }) => {
         }
         value={postData._id ? postData.borrowerHandle : null}
       />
-      <Button title="Submit" onPress={handleSubmit} />
+      {handleSubmit?
+        <Button title="Submit" onPress={handleSubmit} />
+        :
+        <></>
+      }
+      {handleDelete?
+        <Button title="Delete" onPress={handleDelete} />
+        :
+        <></>
+      }
+      {handleCancel?
+        <Button title="Cancel" onPress={handleCancel} />
+        :
+        <></>
+      }
     </View>
   );
 };
