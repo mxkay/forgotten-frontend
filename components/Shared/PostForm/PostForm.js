@@ -7,45 +7,45 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
       <TextInput
         placeholder="Item"
         onChangeText={(text) => handleChange({ ...postData, name: text })}
-        value={postData._id ? postData.name : null}
+        value={postData.name? postData.name : ''}
       />
       <TextInput
         placeholder="Icon"
         onChangeText={(text) => handleChange({ ...postData, icon: text })}
-        value={postData._id ? postData.icon : null}
+        value={postData.icon ? postData.icon : ''}
       />
       <TextInput
         placeholder="Value"
         onChangeText={(text) =>
           handleChange({ ...postData, value: Number(text) })
         }
-        value={postData._id ? postData.value.toString() : null}
+        value={postData.value ? postData.value.toString() : ''}
       />
       <TextInput
         placeholder="Transaction Date MM/DD/YY"
         onChangeText={(text) =>
           handleChange({ ...postData, transactionDate: text })
         }
-        value={postData._id ? postData.transactionDate : null}
+        value={postData.transactionDate ? postData.transactionDate : ''}
       />
       <TextInput
         placeholder="Anticipated Return Date MM/DD/YY"
         onChangeText={(text) => handleChange({ ...postData, returnDate: text })}
-        value={postData._id ? postData.returnDate : null}
+        value={postData.returnDate ? postData.returnDate : ''}
       />
       <TextInput
         placeholder="Lender Handle"
         onChangeText={(text) =>
           handleChange({ ...postData, lenderHandle: text })
         }
-        value={postData._id ? postData.lenderHandle : null}
+        value={postData.lenderHandle ? postData.lenderHandle : ''}
       />
       <TextInput
         placeholder="Borrower Handle or Name"
         onChangeText={(text) =>
           handleChange({ ...postData, borrowerHandle: text })
         }
-        value={postData._id ? postData.borrowerHandle : null}
+        value={postData.borrowerHandle ? postData.borrowerHandle : ''}
       />
       {handleSubmit?
         <Button title="Submit" onPress={handleSubmit} />
