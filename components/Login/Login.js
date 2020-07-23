@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Text, View, TextInput, Button } from "react-native";
+import { Text, View, TextInput, Button, StyleSheet, KeyboardAvoidingView } from "react-native";
 import axios from "axios";
 import InfoMessage from "../Shared/InfoMessage/InfoMessage";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
@@ -60,38 +60,40 @@ const Login = () => {
   };
 
   return (
-    <View>
+    <KeyboardAvoidingView 
+    behavior="padding" 
+    style={styles.main}>
       {/* Sign in form */}
-      <View>
-        <Text>Sign In</Text>
-        <TextInput
+      <View style={styles.signIn}>
+        <Text style={styles.title}>Sign In</Text>
+        <TextInput style={styles.placeholder}
           placeholder="Handle"
           onChangeText={(text) => setInput(text.toLowerCase())}
           value={input}
         />
-        <Button title="Submit" onPress={attemptLogin} />
+        <Button style={styles.button} title="Submit" onPress={attemptLogin} />
       </View>
       {/* Create account form */}
-      <View>
-        <Text>Don't have an account? Make one below: </Text>
-        <TextInput
+      <View style={styles.newUser}>
+        <Text style={styles.title}>Don't have an account? Make one below: </Text>
+        <TextInput style={styles.placeholder}
           placeholder="First Name"
           onChangeText={(text) => setNewUser({ ...newUser, name: text })}
           value={newUser.name}
         />
-        <TextInput
+        <TextInput style={styles.placeholder}
           placeholder="Handle"
           onChangeText={(text) =>
             setNewUser({ ...newUser, handle: text.toLowerCase() })
           }
           value={newUser.handle}
         />
-        <TextInput
+        <TextInput style={styles.placeholder}
           placeholder="Email"
           onChangeText={(text) => setNewUser({ ...newUser, email: text })}
           value={newUser.email}
         />
-        <Button title="Submit" onPress={onCreateSubmit} />
+        <Button style={styles.button} title="Submit" onPress={onCreateSubmit} />
       </View>
       <View>
         {isValid === false ? <InfoMessage content="Invalid Handle" /> : null}
@@ -99,8 +101,49 @@ const Login = () => {
           <InfoMessage content="Handle Already Taken" />
         ) : null}
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  main: {
+    backgroundColor: "#bbe1fa",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%"
+  },
+  signIn: {
+    width: "60%",
+    // padding: 30,
+    textAlign: "center",
+  },
+  newUser: {
+    width: "60%",
+    paddingTop: 20,
+    textAlign: "center",
+    
+  },
+  placeholder: {
+    textAlign: "left",
+    padding: 2,
+    color: "white",
+    fontSize: 18,
+
+  },
+  button: {
+    borderWidth: 2,
+    borderRadius: 24,
+    backgroundColor: "#302EA7"
+  },
+  title: {
+    padding: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "black",
+    width: "100%",
+    textAlign: "center",
+  }
+
+})
 
 export default Login;
