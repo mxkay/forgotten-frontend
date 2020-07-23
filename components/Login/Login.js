@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 20,
     fontWeight: "bold",
-    color: "black",
+    color: "#302ea7",
     width: "100%",
     textAlign: "center",
   }
