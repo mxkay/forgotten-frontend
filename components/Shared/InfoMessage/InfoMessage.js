@@ -1,12 +1,18 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
 const InfoMessage = ({ content }) => {
   return (
     <View>
-      <Text>{content}</Text>
+      <Text style={styles.text}>{content}</Text>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  text: {
+    color: "red",
+  },
+});
 
 export default InfoMessage;
