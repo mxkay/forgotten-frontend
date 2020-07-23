@@ -56,7 +56,7 @@ const EditPost = ({ navigation, id }) => {
   };
 
   if (!post) {
-    return <p>Loading...</p>;
+    return <Text>Loading...</Text>;
   }
 
   if (isDeleted) {
