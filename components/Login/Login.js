@@ -110,17 +110,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#bbe1fa",
     justifyContent: "center",
     alignItems: "center",
-    height: "100%"
+    height: "100%",
   },
   signIn: {
-    width: "60%",
+    width: "70%",
     // padding: 30,
     textAlign: "center",
+    backgroundColor: "#ECECEC",
+    borderTopRightRadius: 50,
+    borderTopLeftRadius: 50,
+    padding: 15,
   },
   newUser: {
-    width: "60%",
-    paddingTop: 20,
+    width: "70%",
+
+    paddingTop: 0,
+    padding: 1,
     textAlign: "center",
+    backgroundColor: "#ECECEC",
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+
     
   },
   placeholder: {
@@ -128,6 +138,7 @@ const styles = StyleSheet.create({
     padding: 2,
     color: "black",
     fontSize: 18,
+    paddingLeft: 20,
 
   },
   button: {
