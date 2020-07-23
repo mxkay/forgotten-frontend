@@ -1,5 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Text, View, TextInput, Button, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  KeyboardAvoidingView,
+} from "react-native";
 import axios from "axios";
 import InfoMessage from "../Shared/InfoMessage/InfoMessage";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
@@ -60,13 +67,12 @@ const Login = () => {
   };
 
   return (
-    <KeyboardAvoidingView 
-    behavior="padding" 
-    style={styles.main}>
+    <KeyboardAvoidingView behavior="padding" style={styles.main}>
       {/* Sign in form */}
       <View style={styles.signIn}>
         <Text style={styles.title}>Sign In</Text>
-        <TextInput style={styles.placeholder}
+        <TextInput
+          style={styles.placeholder}
           placeholder="Handle"
           onChangeText={(text) => setInput(text.toLowerCase())}
           value={input}
@@ -75,20 +81,25 @@ const Login = () => {
       </View>
       {/* Create account form */}
       <View style={styles.newUser}>
-        <Text style={styles.title}>Don't have an account? Make one below: </Text>
-        <TextInput style={styles.placeholder}
+        <Text style={styles.title}>
+          Don't have an account? Make one below:{" "}
+        </Text>
+        <TextInput
+          style={styles.placeholder}
           placeholder="First Name"
           onChangeText={(text) => setNewUser({ ...newUser, name: text })}
           value={newUser.name}
         />
-        <TextInput style={styles.placeholder}
+        <TextInput
+          style={styles.placeholder}
           placeholder="Handle"
           onChangeText={(text) =>
             setNewUser({ ...newUser, handle: text.toLowerCase() })
           }
           value={newUser.handle}
         />
-        <TextInput style={styles.placeholder}
+        <TextInput
+          style={styles.placeholder}
           placeholder="Email"
           onChangeText={(text) => setNewUser({ ...newUser, email: text })}
           value={newUser.email}
@@ -133,8 +144,6 @@ const styles = StyleSheet.create({
     // borderBottomLeftRadius: 50,
     // borderBottomRightRadius: 50,
     borderRadius: 30,
-
-    
   },
   placeholder: {
     textAlign: "left",
@@ -142,12 +151,11 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 18,
     paddingLeft: 20,
-
   },
   button: {
     borderWidth: 2,
     borderRadius: 24,
-    backgroundColor: "#302EA7"
+    backgroundColor: "#302EA7",
   },
   title: {
     padding: 10,
@@ -156,8 +164,7 @@ const styles = StyleSheet.create({
     color: "#302ea7",
     width: "100%",
     textAlign: "center",
-  }
-
-})
+  },
+});
 
 export default Login;

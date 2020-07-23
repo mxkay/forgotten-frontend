@@ -6,8 +6,13 @@ import Profile from "./components/Profile/Profile";
 import NewPost from "./components/NewPost/NewPost";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function App() {
+  library.add(fas);
+
   const [userData, setUserData] = useState({
     email: "",
     handle: "",

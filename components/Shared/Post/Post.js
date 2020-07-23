@@ -12,7 +12,7 @@ const Post = (props) => {
         <View style={styles.topOfCard}>
           <Text style={styles.icon}>{"icon"}</Text>
           <Text style={styles.lenderBorrower}>
-            {data.lenderName} {"=>"} {data.borrowerName}
+            {data.lenderName} {"👉"} {data.borrowerName}
           </Text>
           <Text style={styles.name}>{data.name}</Text>
         </View>
@@ -48,14 +48,15 @@ const styles = StyleSheet.create({
   card: {
     margin: 13,
     padding: 3,
-    backgroundColor: "#E5E4E0",
+    backgroundColor: "#ECECEC",
     color: "#302EA7",
-    borderRadius: 25,
+    borderRadius: 5,
   },
   lenderBorrower: {
     fontSize: 25,
     color: "#302EA7",
     padding: 8,
+    fontWeight: "bold",
   },
   name: {
     fontSize: 20,
