@@ -16,18 +16,20 @@ const PostForm = ({ handleChange, handleSubmit, postData }) => {
       />
       <TextInput
         placeholder="Value"
-        onChangeText={(text) => handleChange({ ...postData, value: text })}
+        onChangeText={(text) =>
+          handleChange({ ...postData, value: Number(text) })
+        }
         value={postData._id ? postData.value.toString() : null}
       />
       <TextInput
-        placeholder="Transaction Date"
+        placeholder="Transaction Date MM/DD/YY"
         onChangeText={(text) =>
           handleChange({ ...postData, transactionDate: text })
         }
         value={postData._id ? postData.transactionDate : null}
       />
       <TextInput
-        placeholder="Anticipated Return Date"
+        placeholder="Anticipated Return Date MM/DD/YY"
         onChangeText={(text) => handleChange({ ...postData, returnDate: text })}
         value={postData._id ? postData.returnDate : null}
       />
