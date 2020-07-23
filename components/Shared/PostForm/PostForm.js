@@ -13,6 +13,21 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
   const [ otherName, setOtherName ] = useState('');
   const [ otherIsFound, setOtherIsFound ] = useState(false);
 
+  // when the user changes isBorrowing,
+  // or when the user changes otherIsUser,
+  // clear all lender and borrower information and rerun handleOtherChange
+  useEffect(() => {
+    handleChange({ ...postData, lenderID: '', lenderName: '', borrowerID: '', borrowerName: '' });
+    if( otherIsUser && otherHandle ) {
+      handleOtherChange(otherHandle);
+    }
+    else if ( !otherIsUser && otherName ) {
+      handleOtherChange(otherName);
+    }
+  },[isBorrowing,otherIsUser])
+
+  // finds a user ID by a given handle
+  // returns empty string if no user is found or there is no response
   const findUserIDByHandle = async (handle) => {
     const res = await axios({
       url: `https://immense-tor-64805.herokuapp.com/api/user/handle/${handle}`,
@@ -21,6 +36,8 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
     return res.data? res.data[0]? res.data[0]._id : '' : '';
   }
 
+  // update the lenderID, lenderName, borrowerID, and borrowerName
+  // based on the text argument, otherIsUser, and isBorrowing
   const handleOtherChange = async (text) => {
     // if the other party is a user,
     if( otherIsUser ) {
