@@ -2,17 +2,18 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View, Platform, ScrollView } from "react-native";
 import Feed from "../Shared/Feed/Feed";
-import Layout from '../Shared/Layout/Layout'
+import Layout from "../Shared/Layout/Layout";
+import NewPostButton from "../Shared/NewPostButton/NewPostButton";
 
 const Home = ({ navigation }) => {
   return (
     <Layout navigation={navigation}>
-      <ScrollView >
+      <ScrollView>
         <View style={styles.container}>
-        {/* <Text>Under Construction</Text> */}
         <Feed />
         </View>
       </ScrollView>
+      <NewPostButton navigation={navigation} />
     </Layout>
   );
 };
