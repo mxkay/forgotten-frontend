@@ -3,6 +3,7 @@ import { Text, View, TextInput, Button, StyleSheet, KeyboardAvoidingView } from 
 import axios from "axios";
 import InfoMessage from "../Shared/InfoMessage/InfoMessage";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
+import Icons from '../Shared/Icons/Icons'
 
 const Login = () => {
   // userData for the user that is currently logged in
@@ -101,6 +102,7 @@ const Login = () => {
           <InfoMessage content="Handle Already Taken" />
         ) : null}
       </View>
+      <Icons />
     </KeyboardAvoidingView>
   );
 };
