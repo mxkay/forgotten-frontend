@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   placeholder: {
     textAlign: "left",
     padding: 2,
-    color: "white",
+    color: "black",
     fontSize: 18,
 
   },
