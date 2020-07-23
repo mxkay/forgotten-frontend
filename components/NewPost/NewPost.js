@@ -1,34 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View } from "react-native";
+import Layout from '../Shared/Layout/Layout';
 import PostForm from "../Shared/PostForm/PostForm";
 
-const NewPost = () => {
+const NewPost = ({ navigation }) => {
   const [post, setPost] = useState({});
+
   const handleChange = (thePost) => {
     setPost({
       ...thePost,
     });
   };
-
-  console.log(post)
   
   const handleSubmit = async () => {
     await axios({
       url: `https://immense-tor-64805.herokuapp.com/api/transaction`,
       method: "POST",
       data: post,
-    }).catch(console.error);
+    })
+    .then(navigation.navigate('Profile'))
+    .catch(console.error);
+  };
+
+  const handleCancel = () => {
+    setPost({});
+    navigation.navigate('Home');
   };
 
   return (
-    <View>
+    <Layout navigation={navigation}>
       <PostForm
-        handleChange={handleChange}
         postData={post}
+        handleChange={handleChange}
         handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
       />
-    </View>
+    </Layout>
   );
 };
 
