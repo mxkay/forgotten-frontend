@@ -1,11 +1,11 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
 const Post = (props) => {
   const data = props.data;
   console.log(data);
   return (
-    <ScrollView>
+    <View>
       <View style={styles.card}>
         <View style={styles.topOfCard}>
           <Text style={styles.icon}>{"icon"}</Text>
@@ -20,7 +20,7 @@ const Post = (props) => {
         </Text>
         <Text style={styles.description}>Description</Text>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
