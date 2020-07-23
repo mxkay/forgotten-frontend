@@ -44,7 +44,7 @@ const EditPost = ({ navigation, id }) => {
   };
 
   if (isUpdated) {
-    () => navigation.navigate("Profile");
+    () => navigation.goBack();
   }
 
   const destroy = async () => {
@@ -60,7 +60,7 @@ const EditPost = ({ navigation, id }) => {
   }
 
   if (isDeleted) {
-    () => navigation.navigate("Home");
+    () => navigation.goBack();
   }
 
   return (
