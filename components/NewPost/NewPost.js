@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { View } from "react-native";
+import Layout from '../Shared/Layout/Layout';
 import PostForm from "../Shared/PostForm/PostForm";
 
 const NewPost = ({ navigation }) => {
@@ -28,14 +29,14 @@ const NewPost = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <Layout navigation={navigation}>
       <PostForm
         postData={post}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
       />
-    </View>
+    </Layout>
   );
 };
 
