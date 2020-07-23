@@ -116,23 +116,44 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
       }
       <Input
         label={`What are you ${isBorrowing?'borrowing':'lending'}?`}
-        placeholder="Item"
+        placeholder="item"
         onChangeText={(text) => handleChange({ ...postData, name: text })}
         value={postData.name? postData.name : ''}
+        rightIcon={
+          <Icon
+            name={postData.name? 'check-circle': 'times-circle'}
+            size={24}
+            color={postData.name? 'green': 'red'}
+          />
+        }
       />
       <Input
         label="Which icon fits best?"
-        placeholder="Icon name"
+        placeholder="icon name"
         onChangeText={(text) => handleChange({ ...postData, icon: text })}
         value={postData.icon ? postData.icon : ''}
       />
       <Input
         label="How much was this worth? (optional)"
-        placeholder="$$.$$"
+        placeholder="0"
         onChangeText={(text) =>
           handleChange({ ...postData, value: Number(text) })
         }
         value={postData.value ? postData.value.toString() : ''}
+        leftIcon={
+          <Icon
+            name='money'
+            size={24}
+            color='black'
+          />
+        }
+        rightIcon={
+          <Icon
+            name='check-circle'
+            size={24}
+            color='green'
+          />
+        }
       />
       <Input
         label="Transaction date"
@@ -141,12 +162,26 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
           handleChange({ ...postData, transactionDate: text })
         }
         value={postData.transactionDate ? postData.transactionDate : ''}
+        rightIcon={
+          <Icon
+            name={postData.transactionDate && postData.transactionDate.length===8? 'check-circle': 'times-circle'}
+            size={24}
+            color={postData.transactionDate && postData.transactionDate.length===8? 'green': 'red'}
+          />
+        }
       />
       <Input
         label="Expected return date (optional)"
         placeholder="MM/DD/YY"
         onChangeText={(text) => handleChange({ ...postData, returnDate: text })}
         value={postData.returnDate ? postData.returnDate : ''}
+        rightIcon={
+          <Icon
+            name={postData.returnDate && postData.returnDate.length===8? 'check-circle': 'times-circle'}
+            size={24}
+            color={postData.returnDate && postData.returnDate.length===8? 'green': 'red'}
+          />
+        }
       />
       
       {handleSubmit?
