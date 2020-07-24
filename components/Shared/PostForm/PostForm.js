@@ -141,7 +141,7 @@ const PostForm = ({
               isBorrowing ? "borrowing this from" : "lending this to"
             }?`}
             placeholder="user handle"
-            onChangeText={(text) => updateOther(text)}
+            onChangeText={(text) => updateOther(text.toLowerCase())}
             value={otherHandle}
             leftIcon={
               <Icon
@@ -242,14 +242,8 @@ const PostForm = ({
             />
           }
         />
-        {/* <Input
-          label="Which icon fits best?"
-          placeholder="icon name"
-          onChangeText={(text) => handleChange({ ...postData, icon: text })}
-          value={postData.icon ? postData.icon : ''}
-        /> */}
-        <Text>Which icon fits best?</Text>
-        <Icons />
+        <Text>Which icon fits best? (optional)</Text>
+        <Icons handleChange={handleChange} postData={postData} />
         {handleSubmit ? (
           <Button title="Submit" onPress={handleSubmit} />
         ) : (

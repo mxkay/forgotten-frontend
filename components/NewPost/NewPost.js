@@ -11,6 +11,8 @@ const NewPost = ({ navigation }) => {
       ...thePost,
     });
   };
+
+  console.log(post)
   
   const handleSubmit = async () => {
     await axios({

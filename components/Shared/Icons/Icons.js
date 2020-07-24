@@ -3,8 +3,15 @@ import { View, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Picker } from "@react-native-community/picker";
 
-const Icons = () => {
-  const [selectedValue, setSelectedValue] = useState("grin-beam");
+const Icons = ({ handleChange, postData }) => {
+  const [selectedValue, setSelectedValue] = useState(
+    postData.icon ? postData.icon : "grin-beam"
+  );
+
+  combinedFunction = (itemValue) => {
+    setSelectedValue(itemValue);
+    handleChange({ ...postData, icon: itemValue });
+  };
 
   return (
     <View style={styles.container}>
@@ -17,7 +24,7 @@ const Icons = () => {
       <Picker
         style={styles.picker}
         selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        onValueChange={(itemValue, itemIndex) => combinedFunction(itemValue)}
       >
         <Picker.Item label="grin-beam" value="grin-beam" />
         <Picker.Item label="sad-cry" value="sad-cry" />
