@@ -7,8 +7,11 @@ const Icons = ({ handleChange, postData }) => {
   const [selectedValue, setSelectedValue] = useState(
     postData.icon ? postData.icon : "grin-beam"
   );
-  
-  useEffect(() => setSelectedValue(postData.icon ? postData.icon : "grin-beam") ,[postData.icon])
+
+  useEffect(
+    () => setSelectedValue(postData.icon ? postData.icon : "grin-beam"),
+    [postData.icon]
+  );
 
   const combinedFunction = (itemValue) => {
     setSelectedValue(itemValue);
@@ -38,10 +41,19 @@ const Icons = ({ handleChange, postData }) => {
         <Picker.Item label="car" value="car" />
         <Picker.Item label="charging-station" value="charging-station" />
         <Picker.Item label="clock" value="clock" />
+        <Picker.Item label="fighter-jet" value="fighter-jet" />
         <Picker.Item label="gem" value="gem" />
         <Picker.Item label="glasses" value="glasses" />
         <Picker.Item label="hat-cowboy" value="hat-cowboy" />
         <Picker.Item label="headphones" value="headphones" />
+        <Picker.Item label="laptop" value="laptop" />
+        <Picker.Item label="paperclip" value="paperclip" />
+        <Picker.Item label="pizza-slice" value="pizza-slice" />
+        <Picker.Item label="puzzle-piece" value="puzzle-piece" />
+        <Picker.Item label="robot" value="robot" />
+        <Picker.Item label="rocket" value="rocket" />
+        <Picker.Item label="seedling" value="seedling" />
+        <Picker.Item label="shapes" value="shapes" />
         <Picker.Item label="shoe-prints" value="shoe-prints" />
         <Picker.Item label="tshirt" value="tshirt" />
         <Picker.Item label="utensils" value="utensils" />
