@@ -14,7 +14,8 @@ const EditPost = ({ navigation }) => {
       isBorrowing: null,
       otherIsUser: null,
       otherHandleOrName: '',
-    }
+    },
+    hold: true,
   });
 
   // finds a user by ID
@@ -59,7 +60,12 @@ const EditPost = ({ navigation }) => {
             tempInitial.otherIsUser = 0;
             tempInitial.otherHandleOrName = tempPost.lenderName;
           }
-          setState({ ...state, post : { ...tempPost }, initial: { ...tempInitial }});
+          setState({
+            ...state,
+            post : { ...tempPost },
+            initial: { ...tempInitial },
+            hold: false
+          });
         }
         else if( tempPost.lenderID === userData._id ) {
           tempInitial.isBorrowing = 0;
@@ -72,7 +78,12 @@ const EditPost = ({ navigation }) => {
             tempInitial.otherIsUser = 0;
             tempInitial.otherHandleOrName = tempPost.borrowerName;
           }
-          setState({ ...state, post : { ...tempPost }, initial: { ...tempInitial }});
+          setState({
+            ...state,
+            post : { ...tempPost },
+            initial: { ...tempInitial },
+            hold: false
+          });
         }
         else {
           navigation.navigate("Home");
@@ -120,6 +131,7 @@ const EditPost = ({ navigation }) => {
         handleDelete={handleDelete}
         handleCancel={handleCancel}
         initial={state.initial}
+        hold={state.hold}
       />
     </Layout>
   );

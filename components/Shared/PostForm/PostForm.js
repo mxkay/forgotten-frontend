@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { Text, Input, Button, ButtonGroup } from "react-native-elements";
 import UserDataContext from "../UserDataContext/UserDataContext";
 import { ScrollView } from "react-native-gesture-handler";
@@ -13,7 +13,8 @@ const PostForm = ({
   handleSubmit,
   handleDelete,
   handleCancel,
-  initial
+  initial,
+  hold,
 }) => {
   // userData for the user that is currently logged in
   const { userData, setUserData } = useContext(UserDataContext);
@@ -53,8 +54,9 @@ const PostForm = ({
   // reformat dates as MM/DD/YY
   useEffect(() => {
     if(
+      postData && (
       (postData.transactionDate && postData.transactionDate.length === 24) ||
-      (postData.returnDate && postData.returnDate.length === 24)
+      (postData.returnDate && postData.returnDate.length === 24))
     ){
       let newPostData = { ...postData };
       if(postData.transactionDate && postData.transactionDate.length === 24) {
@@ -157,158 +159,164 @@ const PostForm = ({
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={{ flex: 1, textAlign: "center" }}>I am ...</Text>
-        <ButtonGroup
-          onPress={(selection) => {
-            setIsBorrowing(selection);
-          }}
-          selectedIndex={isBorrowing}
-          buttons={buttonsIsBorrowing}
-          containerStyle={{ height: 40 }}
-        />
-        <Text style={{ flex: 1, textAlign: "center" }}>{`${
-          isBorrowing ? "from" : "to"
-        } someone who`}</Text>
-        <ButtonGroup
-          onPress={(selection) => {
-            setOtherIsUser(selection);
-          }}
-          selectedIndex={otherIsUser}
-          buttons={buttonsOtherIsUser}
-          containerStyle={{ height: 40 }}
-        />
+    <>
+    {postData && !hold ?
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={{ flex: 1, textAlign: "center" }}>I am ...</Text>
+          <ButtonGroup
+            onPress={(selection) => {
+              setIsBorrowing(selection);
+            }}
+            selectedIndex={isBorrowing}
+            buttons={buttonsIsBorrowing}
+            containerStyle={{ height: 40 }}
+          />
+          <Text style={{ flex: 1, textAlign: "center" }}>{`${
+            isBorrowing ? "from" : "to"
+          } someone who`}</Text>
+          <ButtonGroup
+            onPress={(selection) => {
+              setOtherIsUser(selection);
+            }}
+            selectedIndex={otherIsUser}
+            buttons={buttonsOtherIsUser}
+            containerStyle={{ height: 40 }}
+          />
 
-        {otherIsUser ? (
+          {otherIsUser ? (
+            <Input
+              label={`Who are you ${
+                isBorrowing ? "borrowing this from" : "lending this to"
+              }?`}
+              placeholder="user handle"
+              onChangeText={(text) => updateOther(text.toLowerCase())}
+              value={otherHandle}
+              leftIcon={
+                <FontAwesomeIcon
+                  icon={otherIsFound ? "user-check" : "user-times"}
+                  size={24}
+                  color={otherIsFound ? "green" : "red"}
+                />
+              }
+            />
+          ) : (
+            <Input
+              label={`Who are you ${
+                isBorrowing ? "borrowing this from" : "lending this to"
+              }?`}
+              placeholder="name"
+              onChangeText={(text) => updateOther(text)}
+              value={otherName}
+              leftIcon={
+                <FontAwesomeIcon
+                  icon={otherName ? "user-astronaut" : "user-times"}
+                  size={24}
+                  color={otherName ? "green" : "red"}
+                />
+              }
+            />
+          )}
           <Input
-            label={`Who are you ${
-              isBorrowing ? "borrowing this from" : "lending this to"
-            }?`}
-            placeholder="user handle"
-            onChangeText={(text) => updateOther(text.toLowerCase())}
-            value={otherHandle}
-            leftIcon={
+            label={`What are you ${isBorrowing ? "borrowing" : "lending"}?`}
+            placeholder="item"
+            onChangeText={(text) => handleChange({ ...postData, name: text })}
+            value={postData.name ? postData.name : ""}
+            leftIcon={<FontAwesomeIcon icon={postData.icon ? postData.icon : "box"} size={24} color="black" />}
+            rightIcon={
               <FontAwesomeIcon
-                icon={otherIsFound ? "user-check" : "user-times"}
+              icon={postData.name ? "check-circle" : "times-circle"}
                 size={24}
-                color={otherIsFound ? "green" : "red"}
+                color={postData.name ? "green" : "red"}
               />
             }
           />
-        ) : (
           <Input
-            label={`Who are you ${
-              isBorrowing ? "borrowing this from" : "lending this to"
-            }?`}
-            placeholder="name"
-            onChangeText={(text) => updateOther(text)}
-            value={otherName}
-            leftIcon={
+            label="How much was this worth? (optional)"
+            placeholder="0"
+            onChangeText={(text) =>
+              handleChange({ ...postData, value: Number(text) })
+            }
+            value={postData.value ? postData.value.toString() : ""}
+            leftIcon={<FontAwesomeIcon icon="dollar-sign" size={24} color="black" />}
+            rightIcon={<FontAwesomeIcon icon="check-circle" size={24} color="green" />}
+          />
+          <Input
+            label="Transaction date"
+            placeholder="MM/DD/YY"
+            onChangeText={(text) =>
+              handleChange({ ...postData, transactionDate: text })
+            }
+            value={postData.transactionDate ? postData.transactionDate : ""}
+            leftIcon={<FontAwesomeIcon icon="calendar-alt" size={24} color="black" />}
+            rightIcon={
               <FontAwesomeIcon
-                icon={otherName ? "user-astronaut" : "user-times"}
+                icon={
+                  postData.transactionDate &&
+                  postData.transactionDate.length === 8
+                    ? "check-circle"
+                    : "times-circle"
+                }
                 size={24}
-                color={otherName ? "green" : "red"}
+                color={
+                  postData.transactionDate &&
+                  postData.transactionDate.length === 8
+                    ? "green"
+                    : "red"
+                }
               />
             }
           />
-        )}
-        <Input
-          label={`What are you ${isBorrowing ? "borrowing" : "lending"}?`}
-          placeholder="item"
-          onChangeText={(text) => handleChange({ ...postData, name: text })}
-          value={postData.name ? postData.name : ""}
-          leftIcon={<FontAwesomeIcon icon={postData.icon ? postData.icon : "box"} size={24} color="black" />}
-          rightIcon={
-            <FontAwesomeIcon
-            icon={postData.name ? "check-circle" : "times-circle"}
-              size={24}
-              color={postData.name ? "green" : "red"}
-            />
-          }
-        />
-        <Input
-          label="How much was this worth? (optional)"
-          placeholder="0"
-          onChangeText={(text) =>
-            handleChange({ ...postData, value: Number(text) })
-          }
-          value={postData.value ? postData.value.toString() : ""}
-          leftIcon={<FontAwesomeIcon icon="dollar-sign" size={24} color="black" />}
-          rightIcon={<FontAwesomeIcon icon="check-circle" size={24} color="green" />}
-        />
-        <Input
-          label="Transaction date"
-          placeholder="MM/DD/YY"
-          onChangeText={(text) =>
-            handleChange({ ...postData, transactionDate: text })
-          }
-          value={postData.transactionDate ? postData.transactionDate : ""}
-          leftIcon={<FontAwesomeIcon icon="calendar-alt" size={24} color="black" />}
-          rightIcon={
-            <FontAwesomeIcon
-              icon={
-                postData.transactionDate &&
-                postData.transactionDate.length === 8
-                  ? "check-circle"
-                  : "times-circle"
-              }
-              size={24}
-              color={
-                postData.transactionDate &&
-                postData.transactionDate.length === 8
-                  ? "green"
-                  : "red"
-              }
-            />
-          }
-        />
-        <Input
-          label="Expected return date (optional)"
-          placeholder="MM/DD/YY"
-          onChangeText={(text) =>
-            handleChange({ ...postData, returnDate: text })
-          }
-          value={postData.returnDate ? postData.returnDate : ""}
-          leftIcon={<FontAwesomeIcon icon="calendar-alt" size={24} color="black" />}
-          rightIcon={
-            <FontAwesomeIcon
-              icon={
-                postData.returnDate && postData.returnDate.length === 8
-                  ? "check-circle"
-                  : "times-circle"
-              }
-              size={24}
-              color={
-                postData.returnDate && postData.returnDate.length === 8
-                  ? "green"
-                  : "red"
-              }
-            />
-          }
-        />
-        <Text style={{ fontSize: 16, fontWeight: "bold", color: "#86939E", marginLeft: 10 }}>Which icon fits best?</Text>
-        <Icons
-          handleChange={handleChange}
-          postData={postData}
-        />
-        {handleSubmit ? (
-          <Button title="Submit" onPress={handleSubmit} />
-        ) : (
-          <></>
-        )}
-        {handleDelete ? (
-          <Button title="Delete" onPress={handleDelete} />
-        ) : (
-          <></>
-        )}
-        {handleCancel ? (
-          <Button title="Cancel" onPress={handleCancel} />
-        ) : (
-          <></>
-        )}
-      </View>
-    </ScrollView>
+          <Input
+            label="Expected return date (optional)"
+            placeholder="MM/DD/YY"
+            onChangeText={(text) =>
+              handleChange({ ...postData, returnDate: text })
+            }
+            value={postData.returnDate ? postData.returnDate : ""}
+            leftIcon={<FontAwesomeIcon icon="calendar-alt" size={24} color="black" />}
+            rightIcon={
+              <FontAwesomeIcon
+                icon={
+                  postData.returnDate && postData.returnDate.length === 8
+                    ? "check-circle"
+                    : "times-circle"
+                }
+                size={24}
+                color={
+                  postData.returnDate && postData.returnDate.length === 8
+                    ? "green"
+                    : "red"
+                }
+              />
+            }
+          />
+          <Text style={{ fontSize: 16, fontWeight: "bold", color: "#86939E", marginLeft: 10 }}>Which icon fits best?</Text>
+          <Icons
+            handleChange={handleChange}
+            postData={postData}
+          />
+          {handleSubmit ? (
+            <Button title="Submit" onPress={handleSubmit} />
+          ) : (
+            <></>
+          )}
+          {handleDelete ? (
+            <Button title="Delete" onPress={handleDelete} />
+          ) : (
+            <></>
+          )}
+          {handleCancel ? (
+            <Button title="Cancel" onPress={handleCancel} />
+          ) : (
+            <></>
+          )}
+        </View>
+      </ScrollView>
+    :
+      <ActivityIndicator size="large" />
+    }
+    </>
   );
 };
 
