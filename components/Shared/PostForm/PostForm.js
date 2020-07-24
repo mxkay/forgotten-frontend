@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View, StyleSheet } from "react-native";
-import { Text, Input, Button, ButtonGroup } from "react-native-elements";
+import { Text, Input, Button, ButtonGroup, ActivityIndicator } from "react-native-elements";
 import UserDataContext from "../UserDataContext/UserDataContext";
 import { ScrollView } from "react-native-gesture-handler";
 import Icons from "../Icons/Icons";
@@ -13,7 +13,8 @@ const PostForm = ({
   handleSubmit,
   handleDelete,
   handleCancel,
-  initial
+  initial,
+  hold,
 }) => {
   // userData for the user that is currently logged in
   const { userData, setUserData } = useContext(UserDataContext);
@@ -159,7 +160,7 @@ const PostForm = ({
 
   return (
     <>
-    {postData?
+    {postData && !hold ?
       <ScrollView>
         <View style={styles.container}>
           <Text style={{ flex: 1, textAlign: "center" }}>I am ...</Text>
@@ -313,7 +314,7 @@ const PostForm = ({
         </View>
       </ScrollView>
     :
-      <></>
+      <ActivityIndicator />
     }
     </>
   );
