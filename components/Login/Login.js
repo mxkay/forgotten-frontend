@@ -4,11 +4,13 @@ import {
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Text, Button } from "react-native-elements";
 import axios from "axios";
 import InfoMessage from "../Shared/InfoMessage/InfoMessage";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
+import { ScrollView } from "react-native-gesture-handler";
 
 const Login = () => {
   // userData for the user that is currently logged in
@@ -66,7 +68,7 @@ const Login = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.main}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={styles.main}>
       {/* Sign in form */}
       <View style={styles.signIn}>
         <Text style={styles.title}>Sign In</Text>
