@@ -6,6 +6,12 @@ import Post from "../Post/Post";
 const Feed = ({ lenderID, borrowerID, mode }) => {
   const [transactions, setTransactions] = useState([]);
 
+  const compareTransactionDateTime = (firstTransaction, secondTransaction) => {
+    if( firstTransaction.transactionDate > secondTransaction.transactionDate) return -1;
+    else if( firstTransaction.transactionDate < secondTransaction.transactionDate) return 1;
+    else return 0;
+  }
+  
   useEffect(() => {
     const makeAPICall = async () => {
       try {
@@ -33,6 +39,9 @@ const Feed = ({ lenderID, borrowerID, mode }) => {
             ( lenderID && transaction.lenderID == lenderID)
         );
       }
+    )
+    .sort(
+      (firstTransaction, secondTransaction) => compareTransactionDateTime(firstTransaction, secondTransaction)
     )
     .map(
       (transaction, index) => {
