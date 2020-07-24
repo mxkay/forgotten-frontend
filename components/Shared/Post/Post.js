@@ -7,6 +7,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 const Post = (props) => {
   const data = props.data;
   console.log(data);
+
+  let formatDate = () => {
+    let date = new Date(data.returnDate);
+    let dateFormatted = `${
+      date.getMonth() + 1
+    }/${date.getDate()}/${date.getFullYear()}`;
+    return dateFormatted;
+  };
+
   return (
     <View>
       <View style={styles.card}>
@@ -20,9 +29,7 @@ const Post = (props) => {
           <Text style={styles.name}>{data.name}</Text>
         </View>
         <Text style={styles.value}>${data.value}</Text>
-        <Text style={styles.returnDate}>
-          Expected Return: {data.returnDate}
-        </Text>
+        <Text style={styles.returnDate}>Expected Return: {formatDate()}</Text>
         <Text style={styles.description}>Description</Text>
         <Button
           icon={<Icon name="pencil" size={15} color="white" />}
