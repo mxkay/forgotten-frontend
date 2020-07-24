@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Button } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import UserDataContext from "../UserDataContext/UserDataContext";
 import SelectedPostContext from "../SelectedPostContext/SelectedPostContext";
@@ -23,8 +22,8 @@ const Post = ({ data, navigation }) => {
       <View style={styles.card}>
         <View style={styles.topOfCard}>
           <Text style={styles.icon}>
-            <Icon
-              name={data.icon?data.icon:"empire"} size={25} color="black"
+            <FontAwesomeIcon
+              icon={data.icon?data.icon:"empire"} size={25} color="black"
             />
           </Text>
           <View style={styles.lenderBorrower}>
@@ -33,26 +32,27 @@ const Post = ({ data, navigation }) => {
             <Text style={styles.lenderBorrowerText}>{data.borrowerName}</Text>
           </View>
           <Text style={styles.name}>{data.name}</Text>
+          { userData._id===data.lenderID || userData._id===data.borrowerID ?
+            <Button
+              icon={<FontAwesomeIcon icon="pen" size={10} color="white" />}
+              buttonStyle={{
+                backgroundColor: "#A0A0A0",
+                borderRadius: 50,
+                height: 25,
+                width: 25,
+                marginHorizontal: 5,
+              }}
+              onPress={() => {
+                setSelectedPost(data._id)
+                navigation.navigate('Edit Post')
+              }}
+            />
+            :
+            <></>
+          }
         </View>
         <Text style={styles.value}>${data.value}</Text>
         <Text style={styles.returnDate}>Expected Return: {formatDate()}</Text>
-        { userData._id===data.lenderID || userData._id===data.borrowerID ?
-          <Button
-            icon={<Icon name="pencil" size={20} color="white" />}
-            buttonStyle={{
-              backgroundColor: "#302EA7",
-              borderRadius: 50,
-              height: 30,
-              width: 30,
-            }}
-            onPress={() => {
-              setSelectedPost(data._id)
-              navigation.navigate('Edit Post')
-            }}
-          />
-          :
-          <></>
-        }
       </View>
     </View>
   );
