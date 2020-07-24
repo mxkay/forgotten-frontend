@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import SelectedPostContext from "../SelectedPostContext/SelectedPostContext";
 
-const Post = (props) => {
-  const data = props.data;
-  console.log(data);
+const Post = ({ data, navigation }) => {
+  const { selectedPost, setSelectedPost } = useContext(SelectedPostContext);
 
   let formatDate = () => {
     let date = new Date(data.returnDate);
@@ -39,7 +39,10 @@ const Post = (props) => {
             height: 25,
             width: 25,
           }}
-          // onPress={'link to NewPost'}
+          onPress={() => {
+            setSelectedPost(data._id)
+            navigation.navigate('Edit Post')
+          }}
         />
       </View>
     </View>

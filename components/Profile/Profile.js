@@ -44,11 +44,11 @@ const Profile = ({ navigation }) => {
             </View>
           </View>
           {filter === "loaned" ? (
-            <Feed lenderID={userData._id} />
+            <Feed lenderID={userData._id} navigation={navigation} />
           ) : filter === "borrowed" ? (
-            <Feed borrowerID={userData._id} />
+            <Feed borrowerID={userData._id} navigation={navigation} />
           ) : (
-            <Feed lenderID={userData._id} borrowerID={userData._id} />
+            <Feed lenderID={userData._id} borrowerID={userData._id} navigation={navigation} />
           )}
         </View>
         <NewPostButton navigation={navigation} />

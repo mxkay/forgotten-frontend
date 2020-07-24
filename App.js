@@ -5,6 +5,7 @@ import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
 import Profile from "./components/Profile/Profile";
 import NewPost from "./components/NewPost/NewPost";
+import EditPost from "./components/EditPost/EditPost";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -35,7 +36,8 @@ export default function App() {
             <Drawer.Navigator initialRouteName="Home">
               <Drawer.Screen name="Home" component={Home} />
               <Drawer.Screen name="Profile" component={Profile} />
-              <Drawer.Screen name="NewPost" component={NewPost} />
+              <Drawer.Screen name="New Post" component={NewPost} />
+              <Drawer.Screen name="Edit Post" component={EditPost} options={{ drawerLabel: () => null }} />
             </Drawer.Navigator>
           </NavigationContainer>
         ) : (
