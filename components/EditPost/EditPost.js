@@ -1,22 +1,21 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
 import PostForm from "../Shared/PostForm/PostForm";
 import axios from "axios";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
 import SelectedPostContext from "../Shared/SelectedPostContext/SelectedPostContext";
 import Layout from "../Shared/Layout/Layout";
-import { set } from "react-native-reanimated";
 
 const EditPost = ({ navigation }) => {
   const { userData, setUserData } = useContext(UserDataContext);
   const { selectedPost, setSelectedPost } = useContext(SelectedPostContext);
-  const [post, setPost] = useState({});
-
-  const [initial, setInitial] = useState({
-    isBorrowing: null,
-    otherIsUser: null,
-    otherHandleOrName: '',
-  })
+  const [state, setState] = useState({
+    post: {},
+    initial: {
+      isBorrowing: null,
+      otherIsUser: null,
+      otherHandleOrName: '',
+    }
+  });
 
   // finds a user by ID
   // returns null if no user is found or there is no response
@@ -50,7 +49,6 @@ const EditPost = ({ navigation }) => {
         tempPost = res.data;
         // set up initial values for lender and borrower
         if( tempPost.borrowerID === userData._id ) {
-          console.log('is a borrowing post!');
           tempInitial.isBorrowing = 1;
           if ( tempPost.lenderID ) {
             tempInitial.otherIsUser = 1;
@@ -61,11 +59,9 @@ const EditPost = ({ navigation }) => {
             tempInitial.otherIsUser = 0;
             tempInitial.otherHandleOrName = tempPost.lenderName;
           }
-          setInitial(tempInitial);
-          setPost(tempPost);
+          setState({ ...state, post : { ...tempPost }, initial: { ...tempInitial }});
         }
         else if( tempPost.lenderID === userData._id ) {
-          console.log('is a lending post!');
           tempInitial.isBorrowing = 0;
           if ( tempPost.borrowerID ) {
             tempInitial.otherIsUser = 1;
@@ -76,8 +72,7 @@ const EditPost = ({ navigation }) => {
             tempInitial.otherIsUser = 0;
             tempInitial.otherHandleOrName = tempPost.borrowerName;
           }
-          setInitial(tempInitial);
-          setPost(tempPost);
+          setState({ ...state, post : { ...tempPost }, initial: { ...tempInitial }});
         }
         else {
           navigation.navigate("Home");
@@ -86,19 +81,17 @@ const EditPost = ({ navigation }) => {
       .catch(console.error);
     }
     else navigation.navigate("Home");
-  },[])
+  },[selectedPost])
   
   const handleChange = (thePost) => {
-    setPost({
-      ...thePost,
-    });
+    setState({ ...state, post: { ...thePost }});
   };
   
   const handleSubmit = async () => {
     await axios({
       url: `https://immense-tor-64805.herokuapp.com/api/transaction/${selectedPost}`,
       method: "PUT",
-      data: post,
+      data: state.post,
     })
     .then( navigation.navigate("Profile") )
     .catch(console.error);
@@ -113,19 +106,20 @@ const EditPost = ({ navigation }) => {
   };
 
   const handleCancel = () => {
-    setPost({});
+    setState({});
+    setSelectedPost('');
     navigation.navigate("Home");
   };
 
   return (
     <Layout navigation={navigation}>
       <PostForm
-        postData={post}
+        postData={state.post}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         handleDelete={handleDelete}
         handleCancel={handleCancel}
-        initial={initial}
+        initial={state.initial}
       />
     </Layout>
   );
