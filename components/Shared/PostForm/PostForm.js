@@ -282,7 +282,7 @@ const PostForm = ({
             />
           }
         />
-        <Text style={{ fontSize: 16, fontWeight: 600, color: "#86939E", marginLeft: 10 }}>Which icon fits best?</Text>
+        <Text style={{ fontSize: 16, fontWeight: "bold", color: "#86939E", marginLeft: 10 }}>Which icon fits best?</Text>
         <Icons
           handleChange={handleChange}
           postData={postData} />
