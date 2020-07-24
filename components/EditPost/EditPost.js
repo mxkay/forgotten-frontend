@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
 import PostForm from "../Shared/PostForm/PostForm";
 import axios from "axios";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
 import SelectedPostContext from "../Shared/SelectedPostContext/SelectedPostContext";
 import Layout from "../Shared/Layout/Layout";
-import { set } from "react-native-reanimated";
 
 const EditPost = ({ navigation }) => {
   const { userData, setUserData } = useContext(UserDataContext);
