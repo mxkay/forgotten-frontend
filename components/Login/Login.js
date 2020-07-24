@@ -131,8 +131,9 @@ const styles = StyleSheet.create({
     // borderTopRightRadius: 50,
     borderRadius: 30,
     // borderTopLeftRadius: 50,
-    padding: 5,
+    padding: 10,
     margin: 30,
+    paddingBottom: 20,
   },
   newUser: {
     width: "70%",
@@ -144,18 +145,15 @@ const styles = StyleSheet.create({
     // borderBottomLeftRadius: 50,
     // borderBottomRightRadius: 50,
     borderRadius: 30,
+    paddingBottom: 20,
   },
   placeholder: {
     textAlign: "left",
-    padding: 2,
+    padding: 7,
     color: "black",
     fontSize: 18,
     paddingLeft: 20,
-  },
-  button: {
-    borderWidth: 2,
-    borderRadius: 24,
-    backgroundColor: "#302EA7",
+
   },
   title: {
     padding: 10,
