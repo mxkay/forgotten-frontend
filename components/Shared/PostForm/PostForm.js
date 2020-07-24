@@ -29,8 +29,8 @@ const PostForm = ({
   const mongoDateTimeToDateString = (mongoDateTime) => {
     if ((typeof mongoDateTime) === "string" && mongoDateTime.length === 24) {
       const dateString =
-        mongoDateTime.substring(8,10) + '/' +
-        mongoDateTime.substring(5,7) + '/' +
+        mongoDateTime.substring(8,10) + "/" +
+        mongoDateTime.substring(5,7) + "/" +
         mongoDateTime.substring(2,4)
       return dateString;
     }
