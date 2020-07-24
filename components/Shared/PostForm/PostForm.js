@@ -27,9 +27,14 @@ const PostForm = ({
   const [otherIsFound, setOtherIsFound] = useState(false);
   
   const mongoDateTimeToDateString = (mongoDateTime) => {
-    let date = new Date(mongoDateTime);
-    let dateString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-    return dateString;
+    if ((typeof mongoDateTime) === "string" && mongoDateTime.length === 24) {
+      const dateString =
+        mongoDateTime.substring(8,10) + '/' +
+        mongoDateTime.substring(5,7) + '/' +
+        mongoDateTime.substring(2,4)
+      return dateString;
+    }
+    else return '';
   };
 
   // on initial change, use initial prop to configure form
