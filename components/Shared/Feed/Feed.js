@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, ActivityIndicator } from "react-native";
 import axios from "axios";
 import Post from "../Post/Post";
 
@@ -47,7 +47,15 @@ const Feed = ({ lenderID, borrowerID, mode, navigation }) => {
       return <Post data={transaction} key={index} navigation={navigation} />;
     });
 
-  return <View style={styles.container}>{posts}</View>;
+  return (
+    <View style={styles.container}>
+      {posts && posts.length>0 ?
+        posts
+      :
+        <ActivityIndicator size="large" />
+      }
+    </View>
+  )
 };
 
 const styles = StyleSheet.create({
