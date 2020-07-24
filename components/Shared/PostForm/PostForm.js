@@ -20,12 +20,13 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
 
   // on mount, use initial prop to configure form
   useEffect(() => {
-    console.log('initial', initial);
-    if(initial.isBorrowing) setIsBorrowing(initial.isBorrowing);
-    if(initial.isUser) setIsBorrowing(initial.isUser);
-    if(initial.otherHandleOrName) {
-      if(initial.isUser) setOtherName(initial.otherHandleOrName); // name and handle reversed?
-      else setOtherHandle(initial.otherHandleOrName);
+    if(initial) {
+      if(initial.isBorrowing) setIsBorrowing(initial.isBorrowing);
+      if(initial.isUser) setIsBorrowing(initial.isUser);
+      if(initial.otherHandleOrName) {
+        if(initial.isUser) setOtherName(initial.otherHandleOrName); // name and handle reversed?
+        else setOtherHandle(initial.otherHandleOrName);
+      }
     }
   },[initial])
 
