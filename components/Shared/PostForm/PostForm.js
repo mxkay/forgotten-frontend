@@ -13,7 +13,7 @@ const PostForm = ({
   handleSubmit,
   handleDelete,
   handleCancel,
-  initial
+  initial,
 }) => {
   // userData for the user that is currently logged in
   const { userData, setUserData } = useContext(UserDataContext);
@@ -25,43 +25,48 @@ const PostForm = ({
   const [otherHandle, setOtherHandle] = useState("");
   const [otherName, setOtherName] = useState("");
   const [otherIsFound, setOtherIsFound] = useState(false);
-  
+
   const mongoDateTimeToDateString = (mongoDateTime) => {
     let date = new Date(mongoDateTime);
-    let dateString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    let dateString = `${
+      date.getMonth() + 1
+    }/${date.getDate()}/${date.getFullYear()}`;
     return dateString;
   };
 
   // on initial change, use initial prop to configure form
   useEffect(() => {
-    if(initial) {
-      if(initial.isBorrowing) setIsBorrowing(initial.isBorrowing);
-      if(initial.isUser) setIsBorrowing(initial.isUser);
-      if(initial.otherHandleOrName) {
-        if(initial.isUser) setOtherName(initial.otherHandleOrName); // name and handle reversed?
+    if (initial) {
+      if (initial.isBorrowing) setIsBorrowing(initial.isBorrowing);
+      if (initial.isUser) setIsBorrowing(initial.isUser);
+      if (initial.otherHandleOrName) {
+        if (initial.isUser) setOtherName(initial.otherHandleOrName);
+        // name and handle reversed?
         else setOtherHandle(initial.otherHandleOrName);
       }
     }
-  },[initial])
+  }, [initial]);
 
   // on postData change, if dates match mongo date time format,
   // reformat dates as MM/DD/YY
   useEffect(() => {
-    if(
+    if (
       (postData.transactionDate && postData.transactionDate.length === 24) ||
       (postData.returnDate && postData.returnDate.length === 24)
-    ){
+    ) {
       let newPostData = { ...postData };
-      if(postData.transactionDate && postData.transactionDate.length === 24) {
-        newPostData.transactionDate = mongoDateTimeToDateString(postData.transactionDate);
+      if (postData.transactionDate && postData.transactionDate.length === 24) {
+        newPostData.transactionDate = mongoDateTimeToDateString(
+          postData.transactionDate
+        );
       }
-      if(postData.returnDate && postData.returnDate.length === 24) {
+      if (postData.returnDate && postData.returnDate.length === 24) {
         newPostData.returnDate = mongoDateTimeToDateString(postData.returnDate);
       }
-      handleChange( newPostData );
+      handleChange(newPostData);
     }
-  },[postData])
-  
+  }, [postData]);
+
   // when the user changes isBorrowing,
   // or when the user changes otherIsUser,
   // clear all lender and borrower information and rerun updateOther
@@ -83,15 +88,14 @@ const PostForm = ({
   // finds a user by handle
   // returns null if no user is found or there is no response
   const findUserByHandle = async (handle) => {
-    if(handle) {
+    if (handle) {
       const res = await axios({
         url: `https://immense-tor-64805.herokuapp.com/api/user/handle/${handle}`,
-        method: "GET"
+        method: "GET",
       }).catch(console.error);
-      return res.data && res.data[0] && res.data[0]._id? res.data[0]: null;
-    }
-    else return null;
-  }
+      return res.data && res.data[0] && res.data[0]._id ? res.data[0] : null;
+    } else return null;
+  };
 
   // update the lenderID, lenderName, borrowerID, and borrowerName
   // based on the text argument, otherIsUser, and isBorrowing
@@ -233,8 +237,8 @@ const PostForm = ({
           rightIcon={<Icon name="check-circle" size={24} color="green" />}
         />
         <Input
-          label="Transaction date"
-          placeholder="MM/DD/YY"
+          label="Transaction date (optional)"
+          placeholder="MM/DD/YYYY"
           onChangeText={(text) =>
             handleChange({ ...postData, transactionDate: text })
           }
@@ -244,14 +248,14 @@ const PostForm = ({
             <Icon
               name={
                 postData.transactionDate &&
-                postData.transactionDate.length === 8
+                postData.transactionDate.length <= 10
                   ? "check-circle"
                   : "times-circle"
               }
               size={24}
               color={
                 postData.transactionDate &&
-                postData.transactionDate.length === 8
+                postData.transactionDate.length <= 10
                   ? "green"
                   : "red"
               }
@@ -259,8 +263,8 @@ const PostForm = ({
           }
         />
         <Input
-          label="Expected return date (optional)"
-          placeholder="MM/DD/YY"
+          label="Expected return date (required)"
+          placeholder="MM/DD/YYYY"
           onChangeText={(text) =>
             handleChange({ ...postData, returnDate: text })
           }
@@ -269,23 +273,30 @@ const PostForm = ({
           rightIcon={
             <Icon
               name={
-                postData.returnDate && postData.returnDate.length === 8
+                postData.returnDate && postData.returnDate.length <= 10
                   ? "check-circle"
                   : "times-circle"
               }
               size={24}
               color={
-                postData.returnDate && postData.returnDate.length === 8
+                postData.returnDate && postData.returnDate.length <= 10
                   ? "green"
                   : "red"
               }
             />
           }
         />
-        <Text style={{ fontSize: 16, fontWeight: "bold", color: "#86939E", marginLeft: 10 }}>Which icon fits best?</Text>
-        <Icons
-          handleChange={handleChange}
-          postData={postData} />
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: "bold",
+            color: "#86939E",
+            marginLeft: 10,
+          }}
+        >
+          Which icon fits best?
+        </Text>
+        <Icons handleChange={handleChange} postData={postData} />
         {handleSubmit ? (
           <Button title="Submit" onPress={handleSubmit} />
         ) : (
