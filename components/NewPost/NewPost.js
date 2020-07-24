@@ -12,8 +12,6 @@ const NewPost = ({ navigation }) => {
     });
   };
 
-  console.log(post)
-  
   const handleSubmit = async () => {
     await axios({
       url: `https://immense-tor-64805.herokuapp.com/api/transaction`,
