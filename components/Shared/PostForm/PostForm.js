@@ -34,7 +34,7 @@ const PostForm = ({
         mongoDateTime.substring(2,4)
       return dateString;
     }
-    else return '';
+    else return mongoDateTime;
   };
 
   // on initial change, use initial prop to configure form
