@@ -96,8 +96,8 @@ const EditPost = ({ navigation, id }) => {
   
   const handleSubmit = async () => {
     await axios({
-      url: `https://immense-tor-64805.herokuapp.com/api/transaction`,
-      method: "POST",
+      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${selectedPost}`,
+      method: "PUT",
       data: post,
     })
     .then( navigation.navigate("Profile") )
