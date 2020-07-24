@@ -6,6 +6,16 @@ import Post from "../Post/Post";
 const Feed = ({ lenderID, borrowerID, mode }) => {
   const [transactions, setTransactions] = useState([]);
 
+  const convertMongoDateTimeToDate = (mongoDateTime) => {
+    return {
+      year: mongoDateTime.slice(0,4),
+      month: mongoDateTime.slice(5,7),
+      day: mongoDateTime.slice(8,10),
+    }
+  }
+
+  if(transactions[0]) console.log('year:', convertMongoDataTimeToDate(transactions[0].transactionDate));
+  
   useEffect(() => {
     const makeAPICall = async () => {
       try {
