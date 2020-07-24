@@ -6,7 +6,7 @@ import { Text, Input, Button, ButtonGroup } from 'react-native-elements';
 import UserDataContext from '../UserDataContext/UserDataContext';
 import { ScrollView } from "react-native-gesture-handler";
 
-const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCancel }) => {
+const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCancel, initial }) => {
   // userData for the user that is currently logged in
   const { userData, setUserData } = useContext(UserDataContext);
   
@@ -18,11 +18,27 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
   const [ otherName, setOtherName ] = useState('');
   const [ otherIsFound, setOtherIsFound ] = useState(false);
 
+  // on mount, use initial prop to configure form
+  useEffect(() => {
+    console.log('initial', initial);
+    if(initial.isBorrowing) setIsBorrowing(initial.isBorrowing);
+    if(initial.isUser) setIsBorrowing(initial.isUser);
+    if(initial.otherHandleOrName) {
+      if(initial.isUser) setOtherName(initial.otherHandleOrName); // name and handle reversed?
+      else setOtherHandle(initial.otherHandleOrName);
+    }
+  },[initial])
+
   // when the user changes isBorrowing,
   // or when the user changes otherIsUser,
   // clear all lender and borrower information and rerun updateOther
   useEffect(() => {
-    handleChange({ ...postData, lenderID: '', lenderName: '', borrowerID: '', borrowerName: '' });
+    handleChange({ ...postData,
+      lenderID: '',
+      lenderName: '',
+      borrowerID: '',
+      borrowerName: ''
+    });
     if( otherIsUser && otherHandle ) {
       updateOther(otherHandle);
     }
@@ -31,14 +47,17 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
     }
   },[isBorrowing,otherIsUser])
 
-  // finds a user by a given handle
+  // finds a user by handle
   // returns null if no user is found or there is no response
-  const findUserIDByHandle = async (handle) => {
-    const res = await axios({
-      url: `https://immense-tor-64805.herokuapp.com/api/user/handle/${handle}`,
-      method: "GET"
-    }).catch(console.error);
-    return res.data && res.data[0] && res.data[0]._id? res.data[0]: null;
+  const findUserByHandle = async (handle) => {
+    if(handle) {
+      const res = await axios({
+        url: `https://immense-tor-64805.herokuapp.com/api/user/handle/${handle}`,
+        method: "GET"
+      }).catch(console.error);
+      return res.data && res.data[0] && res.data[0]._id? res.data[0]: null;
+    }
+    else return null;
   }
 
   // update the lenderID, lenderName, borrowerID, and borrowerName
@@ -48,7 +67,7 @@ const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCa
     if( otherIsUser ) {
       setOtherHandle(text);
       // search for their account
-      const other = await findUserIDByHandle(text);
+      const other = await findUserByHandle(text);
       // if I find an account,
       if( other ) {
         // if the user is borrowing
