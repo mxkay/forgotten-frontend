@@ -25,8 +25,14 @@ const PostForm = ({
   const [otherHandle, setOtherHandle] = useState("");
   const [otherName, setOtherName] = useState("");
   const [otherIsFound, setOtherIsFound] = useState(false);
+  
+  const mongoDateTimeToDateString = (mongoDateTime) => {
+    let date = new Date(mongoDateTime);
+    let dateString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    return dateString;
+  };
 
-  // on mount, use initial prop to configure form
+  // on initial change, use initial prop to configure form
   useEffect(() => {
     if(initial) {
       if(initial.isBorrowing) setIsBorrowing(initial.isBorrowing);
@@ -38,6 +44,24 @@ const PostForm = ({
     }
   },[initial])
 
+  // on postData change, if dates match mongo date time format,
+  // reformat dates as MM/DD/YY
+  useEffect(() => {
+    if(
+      (postData.transactionDate && postData.transactionDate.length === 24) ||
+      (postData.returnDate && postData.returnDate.length === 24)
+    ){
+      let newPostData = { ...postData };
+      if(postData.transactionDate && postData.transactionDate.length === 24) {
+        newPostData.transactionDate = mongoDateTimeToDateString(postData.transactionDate);
+      }
+      if(postData.returnDate && postData.returnDate.length === 24) {
+        newPostData.returnDate = mongoDateTimeToDateString(postData.returnDate);
+      }
+      handleChange( newPostData );
+    }
+  },[postData])
+  
   // when the user changes isBorrowing,
   // or when the user changes otherIsUser,
   // clear all lender and borrower information and rerun updateOther
