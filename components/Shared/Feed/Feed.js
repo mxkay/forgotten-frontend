@@ -6,15 +6,11 @@ import Post from "../Post/Post";
 const Feed = ({ lenderID, borrowerID, mode }) => {
   const [transactions, setTransactions] = useState([]);
 
-  const convertMongoDateTimeToDate = (mongoDateTime) => {
-    return {
-      year: mongoDateTime.slice(0,4),
-      month: mongoDateTime.slice(5,7),
-      day: mongoDateTime.slice(8,10),
-    }
+  const compareTransactionDateTime = (firstTransaction, secondTransaction) => {
+    if( firstTransaction.transactionDate > secondTransaction.transactionDate) return -1;
+    else if( firstTransaction.transactionDate < secondTransaction.transactionDate) return 1;
+    else return 0;
   }
-
-  if(transactions[0]) console.log('year:', convertMongoDataTimeToDate(transactions[0].transactionDate));
   
   useEffect(() => {
     const makeAPICall = async () => {
@@ -43,6 +39,9 @@ const Feed = ({ lenderID, borrowerID, mode }) => {
             ( lenderID && transaction.lenderID == lenderID)
         );
       }
+    )
+    .sort(
+      (firstTransaction, secondTransaction) => compareTransactionDateTime(firstTransaction, secondTransaction)
     )
     .map(
       (transaction, index) => {
