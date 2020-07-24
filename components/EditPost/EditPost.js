@@ -7,7 +7,7 @@ import SelectedPostContext from "../Shared/SelectedPostContext/SelectedPostConte
 import Layout from "../Shared/Layout/Layout";
 import { set } from "react-native-reanimated";
 
-const EditPost = ({ navigation, id }) => {
+const EditPost = ({ navigation }) => {
   const { userData, setUserData } = useContext(UserDataContext);
   const { selectedPost, setSelectedPost } = useContext(SelectedPostContext);
   const [post, setPost] = useState({});
@@ -106,7 +106,7 @@ const EditPost = ({ navigation, id }) => {
 
   const handleDelete = async () => {
     const response = await axios({
-      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${id}`,
+      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${selectedPost}`,
       method: "DELETE",
     })
     .then( navigation.navigate("Home") )
