@@ -282,8 +282,10 @@ const PostForm = ({
             />
           }
         />
-        <Text>Which icon fits best? (optional)</Text>
-        <Icons handleChange={handleChange} postData={postData} />
+        <Text style={{ fontSize: 16, fontWeight: 600, color: "#86939E", marginLeft: 10 }}>Which icon fits best?</Text>
+        <Icons
+          handleChange={handleChange}
+          postData={postData} />
         {handleSubmit ? (
           <Button title="Submit" onPress={handleSubmit} />
         ) : (
