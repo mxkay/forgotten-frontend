@@ -7,8 +7,14 @@ import UserDataContext from "../UserDataContext/UserDataContext";
 import { ScrollView } from "react-native-gesture-handler";
 import Icons from "../Icons/Icons";
 
-const PostForm = ({ postData, handleChange, handleSubmit, handleDelete, handleCancel, initial }) => {
-
+const PostForm = ({
+  postData,
+  handleChange,
+  handleSubmit,
+  handleDelete,
+  handleCancel,
+  initial
+}) => {
   // userData for the user that is currently logged in
   const { userData, setUserData } = useContext(UserDataContext);
 
