@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 
 // set the defaults
 const UserDataContext = createContext({

@@ -8,7 +8,7 @@ const Icons = ({ handleChange, postData }) => {
     postData.icon ? postData.icon : "grin-beam"
   );
 
-  combinedFunction = (itemValue) => {
+  const combinedFunction = (itemValue) => {
     setSelectedValue(itemValue);
     handleChange({ ...postData, icon: itemValue });
   };
