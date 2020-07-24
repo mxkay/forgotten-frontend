@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View, StyleSheet } from "react-native";
 import { Text, Input, Button, ButtonGroup } from "react-native-elements";
 import UserDataContext from "../UserDataContext/UserDataContext";
@@ -189,8 +189,8 @@ const PostForm = ({
             onChangeText={(text) => updateOther(text.toLowerCase())}
             value={otherHandle}
             leftIcon={
-              <Icon
-                name={otherIsFound ? "user-check" : "user-times"}
+              <FontAwesomeIcon
+                icon={otherIsFound ? "user-check" : "user-times"}
                 size={24}
                 color={otherIsFound ? "green" : "red"}
               />
@@ -205,8 +205,8 @@ const PostForm = ({
             onChangeText={(text) => updateOther(text)}
             value={otherName}
             leftIcon={
-              <Icon
-                name={otherName ? "user-astronaut" : "user-times"}
+              <FontAwesomeIcon
+                icon={otherName ? "user-astronaut" : "user-times"}
                 size={24}
                 color={otherName ? "green" : "red"}
               />
@@ -218,10 +218,10 @@ const PostForm = ({
           placeholder="item"
           onChangeText={(text) => handleChange({ ...postData, name: text })}
           value={postData.name ? postData.name : ""}
-          leftIcon={<Icon name="box" size={24} color="black" />}
+          leftIcon={<FontAwesomeIcon icon={postData.icon ? postData.icon : "box"} size={24} color="black" />}
           rightIcon={
-            <Icon
-              name={postData.name ? "check-circle" : "times-circle"}
+            <FontAwesomeIcon
+            icon={postData.name ? "check-circle" : "times-circle"}
               size={24}
               color={postData.name ? "green" : "red"}
             />
@@ -234,8 +234,8 @@ const PostForm = ({
             handleChange({ ...postData, value: Number(text) })
           }
           value={postData.value ? postData.value.toString() : ""}
-          leftIcon={<Icon name="dollar-sign" size={24} color="black" />}
-          rightIcon={<Icon name="check-circle" size={24} color="green" />}
+          leftIcon={<FontAwesomeIcon icon="dollar-sign" size={24} color="black" />}
+          rightIcon={<FontAwesomeIcon icon="check-circle" size={24} color="green" />}
         />
         <Input
           label="Transaction date"
@@ -244,10 +244,10 @@ const PostForm = ({
             handleChange({ ...postData, transactionDate: text })
           }
           value={postData.transactionDate ? postData.transactionDate : ""}
-          leftIcon={<Icon name="calendar-alt" size={24} color="black" />}
+          leftIcon={<FontAwesomeIcon icon="calendar-alt" size={24} color="black" />}
           rightIcon={
-            <Icon
-              name={
+            <FontAwesomeIcon
+              icon={
                 postData.transactionDate &&
                 postData.transactionDate.length === 8
                   ? "check-circle"
@@ -270,10 +270,10 @@ const PostForm = ({
             handleChange({ ...postData, returnDate: text })
           }
           value={postData.returnDate ? postData.returnDate : ""}
-          leftIcon={<Icon name="calendar-alt" size={24} color="black" />}
+          leftIcon={<FontAwesomeIcon icon="calendar-alt" size={24} color="black" />}
           rightIcon={
-            <Icon
-              name={
+            <FontAwesomeIcon
+              icon={
                 postData.returnDate && postData.returnDate.length === 8
                   ? "check-circle"
                   : "times-circle"
@@ -290,7 +290,8 @@ const PostForm = ({
         <Text style={{ fontSize: 16, fontWeight: "bold", color: "#86939E", marginLeft: 10 }}>Which icon fits best?</Text>
         <Icons
           handleChange={handleChange}
-          postData={postData} />
+          postData={postData}
+        />
         {handleSubmit ? (
           <Button title="Submit" onPress={handleSubmit} />
         ) : (

@@ -1,11 +1,11 @@
 import React from "react";
 import { Button } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 const NewPostButton = ({ navigation }) => {
   return (
     <Button
-      icon={<Icon name="plus" size={25} color="white" />}
+      icon={<FontAwesomeIcon icon="plus" size={25} color="white" />}
       buttonStyle={{
         backgroundColor: "#302EA7",
         borderRadius: 50,

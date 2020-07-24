@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Picker } from "@react-native-community/picker";
@@ -7,6 +7,8 @@ const Icons = ({ handleChange, postData }) => {
   const [selectedValue, setSelectedValue] = useState(
     postData.icon ? postData.icon : "grin-beam"
   );
+  
+  useEffect(() => setSelectedValue(postData.icon ? postData.icon : "grin-beam") ,[postData.icon])
 
   const combinedFunction = (itemValue) => {
     setSelectedValue(itemValue);
