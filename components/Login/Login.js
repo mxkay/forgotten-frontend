@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
 import {
-  Text,
   View,
   TextInput,
-  Button,
   StyleSheet,
   KeyboardAvoidingView,
 } from "react-native";
+import { Text, Button } from "react-native-elements";
 import axios from "axios";
 import InfoMessage from "../Shared/InfoMessage/InfoMessage";
 import UserDataContext from "../Shared/UserDataContext/UserDataContext";
@@ -77,7 +76,7 @@ const Login = () => {
           onChangeText={(text) => setInput(text.toLowerCase())}
           value={input}
         />
-        <Button style={styles.button} title="Submit" onPress={attemptLogin} />
+        <Button buttonStyle={styles.button} title="Submit" onPress={attemptLogin} />
       </View>
       {/* Create account form */}
       <View style={styles.newUser}>
@@ -104,7 +103,7 @@ const Login = () => {
           onChangeText={(text) => setNewUser({ ...newUser, email: text })}
           value={newUser.email}
         />
-        <Button style={styles.button} title="Submit" onPress={onCreateSubmit} />
+        <Button buttonStyle={styles.button} title="Submit" onPress={onCreateSubmit} />
       </View>
       <View>
         {isValid === false ? <InfoMessage content="Invalid Handle" /> : null}
@@ -125,27 +124,20 @@ const styles = StyleSheet.create({
   },
   signIn: {
     width: "70%",
-    // padding: 30,
     textAlign: "center",
     backgroundColor: "#ECECEC",
-    // borderTopRightRadius: 50,
     borderRadius: 30,
-    // borderTopLeftRadius: 50,
     padding: 10,
     margin: 30,
-    paddingBottom: 20,
+    maxWidth: 600,
   },
   newUser: {
     width: "70%",
-
-    // paddingTop: 0,
     padding: 10,
     textAlign: "center",
     backgroundColor: "#ECECEC",
-    // borderBottomLeftRadius: 50,
-    // borderBottomRightRadius: 50,
     borderRadius: 30,
-    paddingBottom: 20,
+    maxWidth: 600,
   },
   placeholder: {
     textAlign: "left",
@@ -162,6 +154,12 @@ const styles = StyleSheet.create({
     color: "#302ea7",
     width: "100%",
     textAlign: "center",
+  },
+  button: {
+    borderWidth: 1,
+    borderRadius: 30,
+    width: "50%",
+    alignSelf: "center",
   },
 });
 
