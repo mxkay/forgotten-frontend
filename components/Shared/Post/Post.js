@@ -2,6 +2,7 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 const Post = (props) => {
   const data = props.data;
@@ -11,9 +12,11 @@ const Post = (props) => {
       <View style={styles.card}>
         <View style={styles.topOfCard}>
           <Text style={styles.icon}>{"icon"}</Text>
-          <Text style={styles.lenderBorrower}>
-            {data.lenderName} {"👉"} {data.borrowerName}
-          </Text>
+          <View style={styles.lenderBorrower}>
+            <Text style={styles.lenderBorrowerText}>{data.lenderName}</Text>
+            <FontAwesomeIcon style={styles.handIcon} icon="hand-point-right" />
+            <Text style={styles.lenderBorrowerText}>{data.borrowerName}</Text>
+          </View>
           <Text style={styles.name}>{data.name}</Text>
         </View>
         <Text style={styles.value}>${data.value}</Text>
@@ -53,6 +56,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   lenderBorrower: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  lenderBorrowerText: {
     fontSize: 25,
     color: "#302EA7",
     padding: 8,
@@ -92,6 +101,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     display: "flex",
     justifyContent: "center",
+  },
+  handIcon: {
+    color: "blue",
+    marginLeft: 5,
+    marginRight: 5,
   },
 });
 
