@@ -1,88 +1,134 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import PostForm from "../Shared/PostForm/PostForm";
 import axios from "axios";
+import UserDataContext from "../Shared/UserDataContext/UserDataContext";
+import SelectedPostContext from "../Shared/SelectedPostContext/SelectedPostContext";
+import Layout from "../Shared/Layout/Layout";
+import { set } from "react-native-reanimated";
 
 const EditPost = ({ navigation, id }) => {
-  const [post, setPost] = useState();
-  const [isUpdated, setIsUpdated] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
+  const { userData, setUserData } = useContext(UserDataContext);
+  const { selectedPost, setSelectedPost } = useContext(SelectedPostContext);
+  const [post, setPost] = useState({});
 
-  console.log(navigation);
+  const [initial, setInitial] = useState({
+    isBorrowing: null,
+    otherIsUser: null,
+    otherHandleOrName: '',
+  })
 
-  useEffect(() => {
-    const makeAPICall = async () => {
-      try {
-        const response = await axios(
-          `https://immense-tor-64805.herokuapp.com/api/transaction/${id}`
-        );
-        console.log(response.data);
-        setPost(response.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    makeAPICall();
-  }, []);
+  // finds a user by ID
+  // returns null if no user is found or there is no response
+  const findUserByID = async (id) => {
+    const res = await axios({
+      url: `https://immense-tor-64805.herokuapp.com/api/user/${id}`,
+      method: "GET"
+    })
+    .catch(console.error);
+    return res.data && res.data._id? res.data: null;
+  }
 
+  useEffect( () => {
+    if(selectedPost) {
+      axios({
+        url: `https://immense-tor-64805.herokuapp.com/api/transaction/${selectedPost}`,
+        method: "GET",
+      })
+      .then( async res => {
+        let tempInitial = {
+          isBorrowing: null,
+          otherIsUser: null,
+          otherHandleOrName: '',
+        }
+        let tempPost = {
+          lenderID: '',
+          lenderName: '',
+          borrowerID: '',
+          borrowerName: '',
+        }
+        tempPost = res.data;
+        // set up initial values for lender and borrower
+        if( tempPost.borrowerID === userData._id ) {
+          console.log('is a borrowing post!');
+          tempInitial.isBorrowing = 1;
+          if ( tempPost.lenderID ) {
+            tempInitial.otherIsUser = 1;
+            const other = await findUserByID( tempPost.lenderID );
+            tempInitial.otherHandleOrName = other.handle;
+          }
+          else {
+            tempInitial.otherIsUser = 0;
+            tempInitial.otherHandleOrName = tempPost.lenderName;
+          }
+          setInitial(tempInitial);
+          setPost(tempPost);
+        }
+        else if( tempPost.lenderID === userData._id ) {
+          console.log('is a lending post!');
+          tempInitial.isBorrowing = 0;
+          if ( tempPost.borrowerID ) {
+            tempInitial.otherIsUser = 1;
+            const other = await findUserByID( tempPost.borrowerID );
+            tempInitial.otherHandleOrName = other.handle;
+          }
+          else {
+            tempInitial.otherIsUser = 0;
+            tempInitial.otherHandleOrName = tempPost.borrowerName;
+          }
+          setInitial(tempInitial);
+          setPost(tempPost);
+        }
+        else {
+          navigation.navigate("Home");
+        }
+      })
+      .catch(console.error);
+    }
+    else navigation.navigate("Home");
+  },[])
+  
   const handleChange = (thePost) => {
     setPost({
       ...thePost,
     });
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    axios({
-      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${id}`,
+  
+  const handleSubmit = async () => {
+    await axios({
+      url: `https://immense-tor-64805.herokuapp.com/api/transaction/${selectedPost}`,
       method: "PUT",
       data: post,
     })
-      .then(() => setIsUpdated(true))
-      .catch(console.error);
+    .then( navigation.navigate("Profile") )
+    .catch(console.error);
   };
 
-  if (isUpdated) {
-    () => navigation.goBack();
-  }
-
-  const destroy = async () => {
+  const handleDelete = async () => {
     const response = await axios({
       url: `https://immense-tor-64805.herokuapp.com/api/transaction/${id}`,
       method: "DELETE",
-    });
-    setIsDeleted(true);
+    })
+    .then( navigation.navigate("Home") )
   };
 
-  if (!post) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (isDeleted) {
-    () => navigation.goBack();
-  }
+  const handleCancel = () => {
+    setPost({});
+    navigation.navigate("Home");
+  };
 
   return (
-    <View style={styles.container}>
-      <Text>Under Construction</Text>
+    <Layout navigation={navigation}>
       <PostForm
         postData={post}
-        handleSubmit={handleSubmit}
         handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleDelete={handleDelete}
+        handleCancel={handleCancel}
+        initial={initial}
       />
-      <Button title="Delete Post" onPress={destroy} />
-    </View>
+    </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-  },
-});
 
 export default EditPost;

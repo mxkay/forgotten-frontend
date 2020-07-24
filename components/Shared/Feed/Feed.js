@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import axios from "axios";
 import Post from "../Post/Post";
 
-const Feed = ({ lenderID, borrowerID, mode }) => {
+const Feed = ({ lenderID, borrowerID, mode, navigation }) => {
   const [transactions, setTransactions] = useState([]);
 
   const compareTransactionDateTime = (firstTransaction, secondTransaction) => {
@@ -46,7 +46,7 @@ const Feed = ({ lenderID, borrowerID, mode }) => {
     .map(
       (transaction, index) => {
         return (
-            <Post data={transaction} key={index} />
+            <Post data={transaction} key={index} navigation={navigation} />
         );
       }
     );

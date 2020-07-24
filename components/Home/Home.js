@@ -10,7 +10,7 @@ const Home = ({ navigation }) => {
     <Layout navigation={navigation}>
       <ScrollView>
         <View style={styles.container}>
-        <Feed />
+        <Feed navigation={navigation} />
         </View>
       </ScrollView>
       <NewPostButton navigation={navigation} />

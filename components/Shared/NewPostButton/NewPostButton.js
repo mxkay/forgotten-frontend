@@ -12,7 +12,7 @@ const NewPostButton = ({ navigation }) => {
         height: 50,
         width: 50,
       }}
-      onPress={() => navigation.navigate("NewPost")}
+      onPress={() => navigation.navigate("New Post")}
     />
   );
 };

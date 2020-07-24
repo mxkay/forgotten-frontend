@@ -13,6 +13,7 @@ const PostForm = ({
   handleSubmit,
   handleDelete,
   handleCancel,
+  initial
 }) => {
   // userData for the user that is currently logged in
   const { userData, setUserData } = useContext(UserDataContext);
@@ -24,7 +25,43 @@ const PostForm = ({
   const [otherHandle, setOtherHandle] = useState("");
   const [otherName, setOtherName] = useState("");
   const [otherIsFound, setOtherIsFound] = useState(false);
+  
+  const mongoDateTimeToDateString = (mongoDateTime) => {
+    let date = new Date(mongoDateTime);
+    let dateString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    return dateString;
+  };
 
+  // on initial change, use initial prop to configure form
+  useEffect(() => {
+    if(initial) {
+      if(initial.isBorrowing) setIsBorrowing(initial.isBorrowing);
+      if(initial.isUser) setIsBorrowing(initial.isUser);
+      if(initial.otherHandleOrName) {
+        if(initial.isUser) setOtherName(initial.otherHandleOrName); // name and handle reversed?
+        else setOtherHandle(initial.otherHandleOrName);
+      }
+    }
+  },[initial])
+
+  // on postData change, if dates match mongo date time format,
+  // reformat dates as MM/DD/YY
+  useEffect(() => {
+    if(
+      (postData.transactionDate && postData.transactionDate.length === 24) ||
+      (postData.returnDate && postData.returnDate.length === 24)
+    ){
+      let newPostData = { ...postData };
+      if(postData.transactionDate && postData.transactionDate.length === 24) {
+        newPostData.transactionDate = mongoDateTimeToDateString(postData.transactionDate);
+      }
+      if(postData.returnDate && postData.returnDate.length === 24) {
+        newPostData.returnDate = mongoDateTimeToDateString(postData.returnDate);
+      }
+      handleChange( newPostData );
+    }
+  },[postData])
+  
   // when the user changes isBorrowing,
   // or when the user changes otherIsUser,
   // clear all lender and borrower information and rerun updateOther
@@ -43,15 +80,18 @@ const PostForm = ({
     }
   }, [isBorrowing, otherIsUser]);
 
-  // finds a user by a given handle
+  // finds a user by handle
   // returns null if no user is found or there is no response
-  const findUserIDByHandle = async (handle) => {
-    const res = await axios({
-      url: `https://immense-tor-64805.herokuapp.com/api/user/handle/${handle}`,
-      method: "GET",
-    }).catch(console.error);
-    return res.data && res.data[0] && res.data[0]._id ? res.data[0] : null;
-  };
+  const findUserByHandle = async (handle) => {
+    if(handle) {
+      const res = await axios({
+        url: `https://immense-tor-64805.herokuapp.com/api/user/handle/${handle}`,
+        method: "GET"
+      }).catch(console.error);
+      return res.data && res.data[0] && res.data[0]._id? res.data[0]: null;
+    }
+    else return null;
+  }
 
   // update the lenderID, lenderName, borrowerID, and borrowerName
   // based on the text argument, otherIsUser, and isBorrowing
@@ -60,7 +100,7 @@ const PostForm = ({
     if (otherIsUser) {
       setOtherHandle(text);
       // search for their account
-      const other = await findUserIDByHandle(text);
+      const other = await findUserByHandle(text);
       // if I find an account,
       if (other) {
         // if the user is borrowing
@@ -242,8 +282,10 @@ const PostForm = ({
             />
           }
         />
-        <Text>Which icon fits best? (optional)</Text>
-        <Icons handleChange={handleChange} postData={postData} />
+        <Text style={{ fontSize: 16, fontWeight: 600, color: "#86939E", marginLeft: 10 }}>Which icon fits best?</Text>
+        <Icons
+          handleChange={handleChange}
+          postData={postData} />
         {handleSubmit ? (
           <Button title="Submit" onPress={handleSubmit} />
         ) : (
